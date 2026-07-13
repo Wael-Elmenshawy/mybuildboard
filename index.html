@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MyBuildBoard</title>
+    <style>
+      :root { color-scheme: light dark; font-family: Arial, sans-serif; }
+      body { margin: 0; padding: 24px; background: #0f172a; color: #e2e8f0; }
+      h1, h2 { margin: 0 0 12px; }
+      .grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+      .panel, .card { border: 1px solid #334155; border-radius: 10px; background: #111827; padding: 12px; }
+      label { display: block; font-size: 0.9rem; margin-top: 8px; }
+      input, select, textarea, button { width: 100%; margin-top: 4px; border-radius: 8px; border: 1px solid #475569; padding: 8px; font: inherit; }
+      button { cursor: pointer; background: #2563eb; color: #fff; border: 0; font-weight: 600; }
+      button.secondary { background: #475569; margin-top: 8px; }
+      .board { margin-top: 16px; display: grid; gap: 10px; }
+      .card { cursor: grab; }
+      .card:active { cursor: grabbing; }
+      .type { font-size: 0.75rem; opacity: 0.8; text-transform: uppercase; }
+      .title { margin: 6px 0 4px; font-size: 1rem; }
+      .ai-output { white-space: pre-wrap; min-height: 72px; }
+      .muted { font-size: 0.85rem; opacity: 0.8; }
+    </style>
+  </head>
+  <body>
+    <h1>MyBuildBoard</h1>
+    <p class="muted">Build an AI-powered portfolio board for your developer profile.</p>
+    <div class="grid">
+      <section class="panel">
+        <h2>Add portfolio card</h2>
+        <label for="card-type">Type</label>
+        <select id="card-type">
+          <option value="project">Project</option>
+          <option value="repository">GitHub Repository</option>
+          <option value="achievement">Technical Achievement</option>
+          <option value="experience">Professional Experience</option>
+        </select>
+        <label for="card-title">Title</label>
+        <input id="card-title" type="text" maxlength="120" placeholder="e.g. Real-time Chat Platform" />
+        <label for="card-details">Details</label>
+        <textarea id="card-details" rows="4" maxlength="500" placeholder="Describe impact, stack, and outcomes"></textarea>
+        <button id="add-card">Add to board</button>
+        <button id="clear-board" class="secondary" type="button">Clear board</button>
+      </section>
+
+      <section class="panel">
+        <h2>AI spotlight</h2>
+        <p class="muted">Generate a concise portfolio summary from your current board.</p>
+        <button id="generate-summary" type="button">Generate summary</button>
+        <div id="ai-output" class="ai-output muted"></div>
+      </section>
+    </div>
+
+    <section class="board panel">
+      <h2>Interactive board</h2>
+      <p class="muted">Drag cards to customize order.</p>
+      <div id="board-cards"></div>
+    </section>
+
+    <script>
+      const STORAGE_KEY = "mybuildboard.cards.v1";
+      const boardCards = document.getElementById("board-cards");
+      const aiOutput = document.getElementById("ai-output");
+      const cardType = document.getElementById("card-type");
+      const cardTitle = document.getElementById("card-title");
+      const cardDetails = document.getElementById("card-details");
+      let cards = [];
+      let dragIndex = null;
+
+      function load() {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        cards = saved ? JSON.parse(saved) : [];
+        render();
+      }
+
+      function save() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(cards));
+      }
+
+      function render() {
+        boardCards.replaceChildren();
+        cards.forEach((card, index) => {
+          const element = document.createElement("article");
+          element.className = "card";
+          element.draggable = true;
+          element.dataset.index = String(index);
+
+          const type = document.createElement("div");
+          type.className = "type";
+          type.textContent = card.type;
+
+          const title = document.createElement("h3");
+          title.className = "title";
+          title.textContent = card.title;
+
+          const details = document.createElement("p");
+          details.textContent = card.details;
+
+          element.append(type, title, details);
+          element.addEventListener("dragstart", () => { dragIndex = index; });
+          element.addEventListener("dragover", (event) => event.preventDefault());
+          element.addEventListener("drop", () => reorder(index));
+          boardCards.append(element);
+        });
+      }
+
+      function reorder(targetIndex) {
+        if (dragIndex === null || dragIndex === targetIndex) return;
+        const [moved] = cards.splice(dragIndex, 1);
+        cards.splice(targetIndex, 0, moved);
+        dragIndex = null;
+        save();
+        render();
+      }
+
+      function generateAISummary() {
+        if (!cards.length) return "Add portfolio cards to generate an AI spotlight.";
+        const byType = cards.reduce((acc, card) => {
+          acc[card.type] = (acc[card.type] || 0) + 1;
+          return acc;
+        }, {});
+        const topKeywords = cards
+          .map((c) => c.details)
+          .join(" ")
+          .toLowerCase()
+          .replace(/[^a-z0-9\s]/g, " ")
+          .split(/\s+/)
+          .filter((word) => word.length > 4)
+          .reduce((acc, word) => {
+            acc[word] = (acc[word] || 0) + 1;
+            return acc;
+          }, {});
+        const focusAreas = Object.entries(topKeywords)
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 3)
+          .map(([word]) => word)
+          .join(", ");
+
+        return [
+          `This developer portfolio highlights ${cards.length} curated items across interactive board sections.`,
+          `Coverage includes ${byType.project || 0} projects, ${byType.repository || 0} repositories, ${byType.achievement || 0} achievements, and ${byType.experience || 0} experience entries.`,
+          focusAreas ? `AI-detected focus areas: ${focusAreas}.` : "Add richer details to surface focus areas."
+        ].join("\n");
+      }
+
+      document.getElementById("add-card").addEventListener("click", () => {
+        const title = cardTitle.value.trim();
+        const details = cardDetails.value.trim();
+        if (!title || !details) return;
+        cards.push({ type: cardType.value, title, details });
+        cardTitle.value = "";
+        cardDetails.value = "";
+        save();
+        render();
+      });
+
+      document.getElementById("clear-board").addEventListener("click", () => {
+        cards = [];
+        save();
+        render();
+        aiOutput.textContent = "";
+      });
+
+      document.getElementById("generate-summary").addEventListener("click", () => {
+        aiOutput.textContent = generateAISummary();
+      });
+
+      load();
+    </script>
+  </body>
+</html>
