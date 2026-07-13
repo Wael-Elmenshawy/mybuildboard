@@ -1,0 +1,70 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+from sqlalchemy import Boolean, String
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from app.shared.database.base_model import BaseModel
+
+if TYPE_CHECKING:
+    from app.boards.model import Board
+    from app.profiles.model import Profile
+
+
+class User(BaseModel):
+    __tablename__ = "users"
+
+    email: Mapped[str] = mapped_column(
+        String,
+        unique=True,
+        index=True,
+    )
+
+    username: Mapped[str] = mapped_column(
+        String,
+        unique=True,
+        index=True,
+    )
+
+    name: Mapped[str | None] = mapped_column(
+        String,
+        nullable=True,
+    )
+
+    avatar_url: Mapped[str | None] = mapped_column(
+        String,
+        nullable=True,
+    )
+
+    provider: Mapped[str] = mapped_column(
+        String,
+    )
+
+    provider_id: Mapped[str] = mapped_column(
+        String,
+    )
+
+    password: Mapped[str | None] = mapped_column(
+        String,
+        nullable=True,
+    )
+
+    is_active: Mapped[bool] = mapped_column(
+        Boolean,
+        default=True,
+        nullable=False,
+    )
+
+    profile: Mapped[Profile] = relationship(
+        "Profile",
+        back_populates="user",
+        uselist=False,
+        cascade="all, delete-orphan",
+    )
+
+    boards: Mapped[list[Board]] = relationship(
+        "Board",
+        back_populates="user",
+        cascade="all, delete-orphan",
+    )

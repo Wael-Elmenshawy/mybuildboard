@@ -1,0 +1,42 @@
+# Python
+**/__pycache__/
+**/.pytest_cache/
+**/.ruff_cache/
+**/.mypy_cache/
+
+# Virtual Environments
+**/.venv/
+**/venv/
+
+# Environment Variables
+**/.env
+**/.env.*
+
+!**/.env.example
+
+# Logs
+**/logs/
+*.log
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node (future frontend)
+frontend/node_modules/
+frontend/.next/
+
+# Terraform (future)
+**/.terraform/
+*.tfstate
+*.tfstate.*
+
+
+
+
+
+
