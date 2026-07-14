@@ -12,6 +12,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.shared.database.base_model import BaseModel
 
 if TYPE_CHECKING:
+    from app.projects.model import Project
     from app.users.model import User
 
 
@@ -55,13 +56,21 @@ class Board(BaseModel):
     )
 
     visibility: Mapped[BoardVisibility] = mapped_column(
-        SqlEnum(BoardVisibility),
+        SqlEnum(
+            BoardVisibility,
+            values_callable=lambda enum: [e.value for e in enum],
+            native_enum=True,
+        ),
         default=BoardVisibility.PUBLIC,
         nullable=False,
     )
 
     status: Mapped[BoardStatus] = mapped_column(
-        SqlEnum(BoardStatus),
+        SqlEnum(
+            BoardStatus,
+            values_callable=lambda enum: [e.value for e in enum],
+            native_enum=True,
+        ),
         default=BoardStatus.ACTIVE,
         nullable=False,
     )
@@ -75,4 +84,10 @@ class Board(BaseModel):
     user: Mapped[User] = relationship(
         "User",
         back_populates="boards",
+    )
+
+    projects: Mapped[list[Project]] = relationship(
+        "Project",
+        back_populates="board",
+        cascade="all, delete-orphan",
     )

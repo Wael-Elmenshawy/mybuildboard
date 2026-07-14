@@ -56,7 +56,7 @@ def get_board(
 
     if board is None:
         raise HTTPException(
-            status_code=404,
+            status_code=status.HTTP_404_NOT_FOUND,
             detail="Board not found",
         )
 
@@ -70,14 +70,21 @@ def get_board(
 def update_board(
     slug: str,
     data: BoardUpdate,
+    current_user=Depends(get_current_user),
     service: BoardService = Depends(get_board_service),
 ):
     board = service.get_by_slug(slug)
 
     if board is None:
         raise HTTPException(
-            status_code=404,
+            status_code=status.HTTP_404_NOT_FOUND,
             detail="Board not found",
+        )
+
+    if board.owner_id != current_user.id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="You do not have permission to update this board.",
         )
 
     return service.update(
@@ -92,16 +99,21 @@ def update_board(
 )
 def delete_board(
     slug: str,
+    current_user=Depends(get_current_user),
     service: BoardService = Depends(get_board_service),
 ):
     board = service.get_by_slug(slug)
 
     if board is None:
         raise HTTPException(
-            status_code=404,
+            status_code=status.HTTP_404_NOT_FOUND,
             detail="Board not found",
         )
 
-    service.delete(board)
+    if board.owner_id != current_user.id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="You do not have permission to delete this board.",
+        )
 
-    return None
+    service.delete(board)

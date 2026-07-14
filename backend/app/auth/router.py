@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends
+from fastapi.security import OAuth2PasswordRequestForm
 
 from app.api.deps import get_auth_service, get_user_service
 from app.auth.service import AuthService
-from app.shared.responses import SuccessResponse
 from app.users.schema import UserCreate, UserResponse
 from app.users.service import UserService
 
@@ -23,14 +23,12 @@ def register(
     return service.create_user(user)
 
 
-@router.post(
-    "/login",
-    response_model=SuccessResponse,
-)
+@router.post("/login")
 def login(
+    form_data: OAuth2PasswordRequestForm = Depends(),
     service: AuthService = Depends(get_auth_service),
 ):
-    return SuccessResponse(
-        message="Login successful.",
-        data=service.login(),
+    return service.login(
+        username=form_data.username,
+        password=form_data.password,
     )

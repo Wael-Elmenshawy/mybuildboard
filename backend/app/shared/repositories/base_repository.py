@@ -1,7 +1,13 @@
+from __future__ import annotations
+
+from typing import Generic, TypeVar
+
 from sqlalchemy.orm import Session
 
+T = TypeVar("T")
 
-class BaseRepository[T]:
+
+class BaseRepository(Generic[T]):
     def __init__(
         self,
         db: Session,
@@ -16,12 +22,26 @@ class BaseRepository[T]:
     def get_all(self) -> list[T]:
         return self.db.query(self.model).all()
 
-    def create(self, obj: T) -> T:
+    def create(
+        self,
+        obj: T,
+    ) -> T:
         self.db.add(obj)
         self.db.commit()
         self.db.refresh(obj)
         return obj
 
-    def delete(self, obj: T) -> None:
+    def update(
+        self,
+        obj: T,
+    ) -> T:
+        self.db.commit()
+        self.db.refresh(obj)
+        return obj
+
+    def delete(
+        self,
+        obj: T,
+    ) -> None:
         self.db.delete(obj)
         self.db.commit()
