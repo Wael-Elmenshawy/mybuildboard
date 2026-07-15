@@ -1,3 +1,5 @@
+from app.experiences.repository import ExperienceRepository
+from app.experiences.service import ExperienceService
 from fastapi import Depends
 from sqlalchemy.orm import Session
 
@@ -50,3 +52,9 @@ def get_skill_service(
 ) -> SkillService:
     repository = SkillRepository(db)
     return SkillService(repository)
+
+def get_experience_service(
+    db: Session = Depends(get_db),
+) -> ExperienceService:
+    repository = ExperienceRepository(db)
+    return ExperienceService(repository)

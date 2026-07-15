@@ -1,3 +1,4 @@
+from app.experiences.router import router as experiences_router
 from fastapi import APIRouter
 
 from app.auth.router import router as auth_router
@@ -15,3 +16,4 @@ router.include_router(profiles_router)
 router.include_router(boards_router)
 router.include_router(projects_router)
 router.include_router(skills_router)
+router.include_router(experiences_router)
