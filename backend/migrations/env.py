@@ -12,6 +12,7 @@ from app.users.model import User
 from app.profiles.model import Profile
 from app.boards.model import Board
 from app.projects.model import Project
+from app.skills.model import Skill
 
 config = context.config
 
