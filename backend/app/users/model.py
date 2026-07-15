@@ -10,6 +10,7 @@ from app.shared.database.base_model import BaseModel
 if TYPE_CHECKING:
     from app.boards.model import Board
     from app.profiles.model import Profile
+    from app.skills.model import Skill
 
 
 class User(BaseModel):
@@ -65,6 +66,12 @@ class User(BaseModel):
 
     boards: Mapped[list[Board]] = relationship(
         "Board",
+        back_populates="user",
+        cascade="all, delete-orphan",
+    )
+
+    skills: Mapped[list[Skill]] = relationship(
+        "Skill",
         back_populates="user",
         cascade="all, delete-orphan",
     )

@@ -1,6 +1,8 @@
 from __future__ import annotations
 
-from fastapi import APIRouter, Depends, HTTPException, status
+import uuid
+
+from fastapi import APIRouter, Depends, status
 
 from app.api.deps import get_project_service
 from app.projects.schema import (
@@ -33,7 +35,7 @@ def create_project(
     response_model=list[ProjectResponse],
 )
 def get_board_projects(
-    board_id,
+    board_id: uuid.UUID,
     service: ProjectService = Depends(get_project_service),
 ):
     return service.get_all(board_id)
@@ -47,15 +49,7 @@ def get_project(
     slug: str,
     service: ProjectService = Depends(get_project_service),
 ):
-    project = service.get_by_slug(slug)
-
-    if project is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Project not found",
-        )
-
-    return project
+    return service.get_by_slug(slug)
 
 
 @router.patch(
@@ -68,12 +62,6 @@ def update_project(
     service: ProjectService = Depends(get_project_service),
 ):
     project = service.get_by_slug(slug)
-
-    if project is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Project not found",
-        )
 
     return service.update(
         project,
@@ -90,11 +78,5 @@ def delete_project(
     service: ProjectService = Depends(get_project_service),
 ):
     project = service.get_by_slug(slug)
-
-    if project is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Project not found",
-        )
 
     service.delete(project)

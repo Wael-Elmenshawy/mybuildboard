@@ -8,6 +8,8 @@ from app.db.session import get_db
 from app.profiles.service import ProfileService
 from app.projects.repository import ProjectRepository
 from app.projects.service import ProjectService
+from app.skills.repository import SkillRepository
+from app.skills.service import SkillService
 from app.users.service import UserService
 
 
@@ -41,3 +43,10 @@ def get_project_service(
 ) -> ProjectService:
     repository = ProjectRepository(db)
     return ProjectService(repository)
+
+
+def get_skill_service(
+    db: Session = Depends(get_db),
+) -> SkillService:
+    repository = SkillRepository(db)
+    return SkillService(repository)

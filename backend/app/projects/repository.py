@@ -15,6 +15,16 @@ class ProjectRepository(BaseRepository[Project]):
     ):
         super().__init__(db, Project)
 
+    def get_by_id(
+        self,
+        project_id: uuid.UUID,
+    ) -> Project | None:
+        return (
+            self.db.query(Project)
+            .filter(Project.id == project_id)
+            .first()
+        )
+
     def get_by_slug(
         self,
         slug: str,
@@ -36,6 +46,20 @@ class ProjectRepository(BaseRepository[Project]):
             .all()
         )
 
+    def get_by_board_and_slug(
+        self,
+        board_id: uuid.UUID,
+        slug: str,
+    ) -> Project | None:
+        return (
+            self.db.query(Project)
+            .filter(
+                Project.board_id == board_id,
+                Project.slug == slug,
+            )
+            .first()
+        )
+
     def slug_exists(
         self,
         slug: str,
@@ -43,6 +67,21 @@ class ProjectRepository(BaseRepository[Project]):
         return (
             self.db.query(Project)
             .filter(Project.slug == slug)
+            .first()
+            is not None
+        )
+
+    def slug_exists_except(
+        self,
+        slug: str,
+        project_id: uuid.UUID,
+    ) -> bool:
+        return (
+            self.db.query(Project)
+            .filter(
+                Project.slug == slug,
+                Project.id != project_id,
+            )
             .first()
             is not None
         )
