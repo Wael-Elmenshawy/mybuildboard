@@ -12,6 +12,7 @@ from app.projects.schema import (
     ProjectCreate,
     ProjectUpdate,
 )
+from app.users.model import User
 
 
 class ProjectService:
@@ -27,6 +28,7 @@ class ProjectService:
     def create(
         self,
         data: ProjectCreate,
+        current_user: User,
     ) -> Project:
 
         board = self.board_repository.get(data.board_id)
@@ -35,6 +37,12 @@ class ProjectService:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="Board not found.",
+            )
+
+        if board.owner_id != current_user.id:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="You do not own this board.",
             )
 
         if self.repository.slug_exists(data.slug):
@@ -53,6 +61,7 @@ class ProjectService:
         self,
         board_id: uuid.UUID,
         github_repo_id: uuid.UUID,
+        current_user: User,
     ) -> Project:
 
         board = self.board_repository.get(board_id)
@@ -61,6 +70,12 @@ class ProjectService:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="Board not found.",
+            )
+
+        if board.owner_id != current_user.id:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="You do not own this board.",
             )
 
         repo = self.github_repo_repository.get(github_repo_id)
@@ -140,7 +155,14 @@ class ProjectService:
         self,
         project: Project,
         data: ProjectUpdate,
+        current_user: User,
     ) -> Project:
+
+        if project.board.owner_id != current_user.id:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="You do not own this project.",
+            )
 
         values = data.model_dump(exclude_unset=True)
 
@@ -165,5 +187,13 @@ class ProjectService:
     def delete(
         self,
         project: Project,
+        current_user: User,
     ) -> None:
+
+        if project.board.owner_id != current_user.id:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="You do not own this project.",
+            )
+
         self.repository.delete(project)
