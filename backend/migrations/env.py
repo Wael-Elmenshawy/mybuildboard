@@ -17,6 +17,7 @@ from app.educations.model import Education
 from app.certificates.model import Certificate
 from app.social_links.model import SocialLink
 from app.achievements.model import Achievement
+from app.github.model import GithubConnection, GithubRepo
 
 config = context.config
 

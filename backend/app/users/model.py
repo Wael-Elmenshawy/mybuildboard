@@ -13,6 +13,7 @@ if TYPE_CHECKING:
     from app.certificates.model import Certificate
     from app.educations.model import Education
     from app.experiences.model import Experience
+    from app.github.model import GithubConnection
     from app.profiles.model import Profile
     from app.skills.model import Skill
     from app.social_links.model import SocialLink
@@ -108,5 +109,12 @@ class User(BaseModel):
     achievements: Mapped[list[Achievement]] = relationship(
         "Achievement",
         back_populates="user",
+        cascade="all, delete-orphan",
+    )
+
+    github_connection: Mapped["GithubConnection | None"] = relationship(
+        "GithubConnection",
+        back_populates="user",
+        uselist=False,
         cascade="all, delete-orphan",
     )

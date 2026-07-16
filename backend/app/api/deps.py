@@ -13,6 +13,8 @@ from app.certificates.service import CertificateService
 from app.db.session import get_db
 from app.educations.repository import EducationRepository
 from app.educations.service import EducationService
+from app.github.repository import GithubConnectionRepository, GithubRepoRepository
+from app.github.service import GithubService
 from app.profiles.service import ProfileService
 from app.projects.repository import ProjectRepository
 from app.projects.service import ProjectService
@@ -95,3 +97,11 @@ def get_achievement_service(
 ) -> AchievementService:
     repository = AchievementRepository(db)
     return AchievementService(repository)
+
+
+def get_github_service(
+    db: Session = Depends(get_db),
+) -> GithubService:
+    connection_repository = GithubConnectionRepository(db)
+    repo_repository = GithubRepoRepository(db)
+    return GithubService(connection_repository, repo_repository)
