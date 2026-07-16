@@ -1,9 +1,7 @@
-from app.social_links.model import SocialLink
 from logging.config import fileConfig
 
-from sqlalchemy import engine_from_config, pool
-
 from alembic import context
+from sqlalchemy import engine_from_config, pool
 
 from app.core.config import settings
 from app.db.database import Base
@@ -17,6 +15,8 @@ from app.skills.model import Skill
 from app.experiences.model import Experience
 from app.educations.model import Education
 from app.certificates.model import Certificate
+from app.social_links.model import SocialLink
+from app.achievements.model import Achievement
 
 config = context.config
 

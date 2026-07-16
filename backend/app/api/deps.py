@@ -3,6 +3,8 @@ from app.experiences.service import ExperienceService
 from fastapi import Depends
 from sqlalchemy.orm import Session
 
+from app.achievements.repository import AchievementRepository
+from app.achievements.service import AchievementService
 from app.auth.service import AuthService
 from app.boards.repository import BoardRepository
 from app.boards.service import BoardService
@@ -86,3 +88,10 @@ def get_social_link_service(
 ) -> SocialLinkService:
     repository = SocialLinkRepository(db)
     return SocialLinkService(repository)
+
+
+def get_achievement_service(
+    db: Session = Depends(get_db),
+) -> AchievementService:
+    repository = AchievementRepository(db)
+    return AchievementService(repository)

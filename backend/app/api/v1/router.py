@@ -1,6 +1,8 @@
+from app.achievements.model import Achievement
 from app.experiences.router import router as experiences_router
 from fastapi import APIRouter
 
+from app.achievements.router import router as achievements_router
 from app.auth.router import router as auth_router
 from app.boards.router import router as boards_router
 from app.certificates.router import router as certificates_router
@@ -23,3 +25,4 @@ router.include_router(experiences_router)
 router.include_router(certificates_router)
 router.include_router(educations_router)
 router.include_router(social_links_router)
+router.include_router(achievements_router)

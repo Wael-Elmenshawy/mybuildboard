@@ -8,6 +8,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.shared.database.base_model import BaseModel
 
 if TYPE_CHECKING:
+    from app.achievements.model import Achievement
     from app.boards.model import Board
     from app.certificates.model import Certificate
     from app.educations.model import Education
@@ -100,6 +101,12 @@ class User(BaseModel):
 
     social_links: Mapped[list[SocialLink]] = relationship(
         "SocialLink",
+        back_populates="user",
+        cascade="all, delete-orphan",
+    )
+
+    achievements: Mapped[list[Achievement]] = relationship(
+        "Achievement",
         back_populates="user",
         cascade="all, delete-orphan",
     )
