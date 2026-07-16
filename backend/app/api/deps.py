@@ -49,13 +49,16 @@ def get_board_service(
     repository = BoardRepository(db)
     return BoardService(repository)
 
-
 def get_project_service(
     db: Session = Depends(get_db),
 ) -> ProjectService:
-    repository = ProjectRepository(db)
-    return ProjectService(repository)
+    project_repository = ProjectRepository(db)
+    github_repo_repository = GithubRepoRepository(db)
 
+    return ProjectService(
+        repository=project_repository,
+        github_repo_repository=github_repo_repository,
+    )
 
 def get_skill_service(
     db: Session = Depends(get_db),

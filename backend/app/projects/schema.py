@@ -35,6 +35,8 @@ class ProjectCreate(BaseModel):
     video_url: str | None = None
     thumbnail_url: str | None = None
 
+    technologies: list[str] = Field(default_factory=list)
+
     display_order: int = 0
 
     is_featured: bool = False
@@ -67,6 +69,8 @@ class ProjectUpdate(BaseModel):
     video_url: str | None = None
     thumbnail_url: str | None = None
 
+    technologies: list[str] | None = None
+
     display_order: int | None = None
 
     is_featured: bool | None = None
@@ -91,9 +95,13 @@ class ProjectResponse(BaseModel):
     video_url: str | None
     thumbnail_url: str | None
 
+    technologies: list[str]
+
     display_order: int
 
     is_featured: bool
+
+    is_imported_from_github: bool
 
     visibility: ProjectVisibility
 

@@ -30,6 +30,22 @@ def create_project(
     return service.create(data)
 
 
+@router.post(
+    "/import-from-github",
+    response_model=ProjectResponse,
+    status_code=status.HTTP_201_CREATED,
+)
+def import_project_from_github(
+    board_id: uuid.UUID,
+    github_repo_id: uuid.UUID,
+    service: ProjectService = Depends(get_project_service),
+):
+    return service.import_from_github(
+        board_id=board_id,
+        github_repo_id=github_repo_id,
+    )
+
+
 @router.get(
     "/board/{board_id}",
     response_model=list[ProjectResponse],
