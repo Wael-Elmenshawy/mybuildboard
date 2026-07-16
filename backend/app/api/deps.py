@@ -16,6 +16,8 @@ from app.projects.repository import ProjectRepository
 from app.projects.service import ProjectService
 from app.skills.repository import SkillRepository
 from app.skills.service import SkillService
+from app.social_links.repository import SocialLinkRepository
+from app.social_links.service import SocialLinkService
 from app.users.service import UserService
 
 
@@ -77,3 +79,10 @@ def get_education_service(
 ) -> EducationService:
     repository = EducationRepository(db)
     return EducationService(repository)
+
+
+def get_social_link_service(
+    db: Session = Depends(get_db),
+) -> SocialLinkService:
+    repository = SocialLinkRepository(db)
+    return SocialLinkService(repository)

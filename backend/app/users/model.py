@@ -14,6 +14,7 @@ if TYPE_CHECKING:
     from app.experiences.model import Experience
     from app.profiles.model import Profile
     from app.skills.model import Skill
+    from app.social_links.model import SocialLink
 
 
 class User(BaseModel):
@@ -93,6 +94,12 @@ class User(BaseModel):
 
     educations: Mapped[list[Education]] = relationship(
         "Education",
+        back_populates="user",
+        cascade="all, delete-orphan",
+    )
+
+    social_links: Mapped[list[SocialLink]] = relationship(
+        "SocialLink",
         back_populates="user",
         cascade="all, delete-orphan",
     )

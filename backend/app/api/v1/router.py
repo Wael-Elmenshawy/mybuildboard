@@ -8,6 +8,7 @@ from app.educations.router import router as educations_router
 from app.profiles.router import router as profiles_router
 from app.projects.router import router as projects_router
 from app.skills.router import router as skills_router
+from app.social_links.router import router as social_links_router
 from app.users.router import router as users_router
 
 router = APIRouter()
@@ -21,3 +22,4 @@ router.include_router(skills_router)
 router.include_router(experiences_router)
 router.include_router(certificates_router)
 router.include_router(educations_router)
+router.include_router(social_links_router)
