@@ -9,6 +9,8 @@ from app.boards.service import BoardService
 from app.certificates.repository import CertificateRepository
 from app.certificates.service import CertificateService
 from app.db.session import get_db
+from app.educations.repository import EducationRepository
+from app.educations.service import EducationService
 from app.profiles.service import ProfileService
 from app.projects.repository import ProjectRepository
 from app.projects.service import ProjectService
@@ -68,3 +70,10 @@ def get_certificate_service(
 ) -> CertificateService:
     repository = CertificateRepository(db)
     return CertificateService(repository)
+
+
+def get_education_service(
+    db: Session = Depends(get_db),
+) -> EducationService:
+    repository = EducationRepository(db)
+    return EducationService(repository)

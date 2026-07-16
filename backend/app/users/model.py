@@ -10,6 +10,7 @@ from app.shared.database.base_model import BaseModel
 if TYPE_CHECKING:
     from app.boards.model import Board
     from app.certificates.model import Certificate
+    from app.educations.model import Education
     from app.experiences.model import Experience
     from app.profiles.model import Profile
     from app.skills.model import Skill
@@ -86,6 +87,12 @@ class User(BaseModel):
 
     certificates: Mapped[list[Certificate]] = relationship(
         "Certificate",
+        back_populates="user",
+        cascade="all, delete-orphan",
+    )
+
+    educations: Mapped[list[Education]] = relationship(
+        "Education",
         back_populates="user",
         cascade="all, delete-orphan",
     )
