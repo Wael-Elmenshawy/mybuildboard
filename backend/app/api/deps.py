@@ -6,6 +6,8 @@ from sqlalchemy.orm import Session
 from app.auth.service import AuthService
 from app.boards.repository import BoardRepository
 from app.boards.service import BoardService
+from app.certificates.repository import CertificateRepository
+from app.certificates.service import CertificateService
 from app.db.session import get_db
 from app.profiles.service import ProfileService
 from app.projects.repository import ProjectRepository
@@ -53,8 +55,16 @@ def get_skill_service(
     repository = SkillRepository(db)
     return SkillService(repository)
 
+
 def get_experience_service(
     db: Session = Depends(get_db),
 ) -> ExperienceService:
     repository = ExperienceRepository(db)
     return ExperienceService(repository)
+
+
+def get_certificate_service(
+    db: Session = Depends(get_db),
+) -> CertificateService:
+    repository = CertificateRepository(db)
+    return CertificateService(repository)

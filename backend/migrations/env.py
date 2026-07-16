@@ -9,6 +9,36 @@ from app.core.config import settings
 from app.db.database import Base
 
 # Import ALL models so Alembic can detect them
+from app.boards.model import Board
+from app.certificates.model import Certificate
+from app.experiences.model import Experience
+from app.profiles.model import Profile
+from app.skills.model import Skill
+from app.boards.model import Board
+from app.certificates.model import Certificate
+from app.experiences.model import Experience
+from app.profiles.model import Profile
+from app.skills.model import Skill
+from app.boards.model import Board
+from app.certificates.model import Certificate
+from app.experiences.model import Experience
+from app.profiles.model import Profile
+from app.skills.model import Skill
+from app.boards.model import Board
+from app.certificates.model import Certificate
+from app.experiences.model import Experience
+from app.profiles.model import Profile
+from app.skills.model import Skill
+from app.boards.model import Board
+from app.certificates.model import Certificate
+from app.experiences.model import Experience
+from app.profiles.model import Profile
+from app.skills.model import Skill
+from app.boards.model import Board
+from app.certificates.model import Certificate
+from app.experiences.model import Experience
+from app.profiles.model import Profile
+from app.skills.model import Skill
 from app.users.model import User
 from app.profiles.model import Profile
 from app.boards.model import Board
