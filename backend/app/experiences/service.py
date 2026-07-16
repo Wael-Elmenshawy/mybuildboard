@@ -2,12 +2,15 @@ from __future__ import annotations
 
 import uuid
 
+from fastapi import HTTPException, status
+
 from app.experiences.model import Experience
 from app.experiences.repository import ExperienceRepository
 from app.experiences.schema import (
     ExperienceCreate,
     ExperienceUpdate,
 )
+from app.users.model import User
 
 
 class ExperienceService:
@@ -38,14 +41,31 @@ class ExperienceService:
     def get_by_id(
         self,
         experience_id: uuid.UUID,
-    ) -> Experience | None:
-        return self.repository.get_by_id(experience_id)
+    ) -> Experience:
+
+        experience = self.repository.get_by_id(experience_id)
+
+        if experience is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Experience not found.",
+            )
+
+        return experience
 
     def update(
         self,
         experience: Experience,
         data: ExperienceUpdate,
+        current_user: User,
     ) -> Experience:
+
+        if experience.user_id != current_user.id:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="You do not own this experience.",
+            )
+
         values = data.model_dump(exclude_unset=True)
 
         for key, value in values.items():
@@ -56,5 +76,13 @@ class ExperienceService:
     def delete(
         self,
         experience: Experience,
+        current_user: User,
     ) -> None:
+
+        if experience.user_id != current_user.id:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="You do not own this experience.",
+            )
+
         self.repository.delete(experience)

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import uuid
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, status
 
 from app.api.deps import get_skill_service
 from app.auth.dependencies import get_current_user
@@ -12,6 +12,7 @@ from app.skills.schema import (
     SkillUpdate,
 )
 from app.skills.service import SkillService
+from app.users.model import User
 
 router = APIRouter(
     prefix="/skills",
@@ -26,7 +27,7 @@ router = APIRouter(
 )
 def create_skill(
     data: SkillCreate,
-    current_user=Depends(get_current_user),
+    current_user: User = Depends(get_current_user),
     service: SkillService = Depends(get_skill_service),
 ):
     return service.create(
@@ -40,7 +41,7 @@ def create_skill(
     response_model=list[SkillResponse],
 )
 def get_my_skills(
-    current_user=Depends(get_current_user),
+    current_user: User = Depends(get_current_user),
     service: SkillService = Depends(get_skill_service),
 ):
     return service.get_all(
@@ -55,20 +56,15 @@ def get_my_skills(
 def update_skill(
     skill_id: uuid.UUID,
     data: SkillUpdate,
-    current_user=Depends(get_current_user),
+    current_user: User = Depends(get_current_user),
     service: SkillService = Depends(get_skill_service),
 ):
     skill = service.get_by_id(skill_id)
 
-    if skill.user_id != current_user.id:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Access denied.",
-        )
-
     return service.update(
         skill,
         data,
+        current_user,
     )
 
 
@@ -78,17 +74,14 @@ def update_skill(
 )
 def delete_skill(
     skill_id: uuid.UUID,
-    current_user=Depends(get_current_user),
+    current_user: User = Depends(get_current_user),
     service: SkillService = Depends(get_skill_service),
 ):
     skill = service.get_by_id(skill_id)
 
-    if skill.user_id != current_user.id:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Access denied.",
-        )
-
-    service.delete(skill)
+    service.delete(
+        skill,
+        current_user,
+    )
 
     return None

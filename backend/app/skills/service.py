@@ -6,7 +6,11 @@ from fastapi import HTTPException, status
 
 from app.skills.model import Skill
 from app.skills.repository import SkillRepository
-from app.skills.schema import SkillCreate, SkillUpdate
+from app.skills.schema import (
+    SkillCreate,
+    SkillUpdate,
+)
+from app.users.model import User
 
 
 class SkillService:
@@ -63,7 +67,14 @@ class SkillService:
         self,
         skill: Skill,
         data: SkillUpdate,
+        current_user: User,
     ) -> Skill:
+
+        if skill.user_id != current_user.id:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="You do not own this skill.",
+            )
 
         values = data.model_dump(
             exclude_unset=True,
@@ -90,5 +101,13 @@ class SkillService:
     def delete(
         self,
         skill: Skill,
+        current_user: User,
     ) -> None:
+
+        if skill.user_id != current_user.id:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="You do not own this skill.",
+            )
+
         self.repository.delete(skill)

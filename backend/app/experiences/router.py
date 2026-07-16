@@ -1,6 +1,8 @@
 from __future__ import annotations
 
-from fastapi import APIRouter, Depends, HTTPException, status
+import uuid
+
+from fastapi import APIRouter, Depends, status
 
 from app.api.deps import get_experience_service
 from app.auth.dependencies import get_current_user
@@ -10,6 +12,7 @@ from app.experiences.schema import (
     ExperienceUpdate,
 )
 from app.experiences.service import ExperienceService
+from app.users.model import User
 
 router = APIRouter(
     prefix="/experiences",
@@ -24,7 +27,7 @@ router = APIRouter(
 )
 def create_experience(
     data: ExperienceCreate,
-    current_user=Depends(get_current_user),
+    current_user: User = Depends(get_current_user),
     service: ExperienceService = Depends(get_experience_service),
 ):
     return service.create(
@@ -38,10 +41,12 @@ def create_experience(
     response_model=list[ExperienceResponse],
 )
 def get_my_experiences(
-    current_user=Depends(get_current_user),
+    current_user: User = Depends(get_current_user),
     service: ExperienceService = Depends(get_experience_service),
 ):
-    return service.get_all(current_user.id)
+    return service.get_all(
+        current_user.id,
+    )
 
 
 @router.patch(
@@ -49,28 +54,17 @@ def get_my_experiences(
     response_model=ExperienceResponse,
 )
 def update_experience(
-    experience_id,
+    experience_id: uuid.UUID,
     data: ExperienceUpdate,
-    current_user=Depends(get_current_user),
+    current_user: User = Depends(get_current_user),
     service: ExperienceService = Depends(get_experience_service),
 ):
     experience = service.get_by_id(experience_id)
 
-    if experience is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Experience not found",
-        )
-
-    if experience.user_id != current_user.id:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Permission denied.",
-        )
-
     return service.update(
         experience,
         data,
+        current_user,
     )
 
 
@@ -79,22 +73,15 @@ def update_experience(
     status_code=status.HTTP_204_NO_CONTENT,
 )
 def delete_experience(
-    experience_id,
-    current_user=Depends(get_current_user),
+    experience_id: uuid.UUID,
+    current_user: User = Depends(get_current_user),
     service: ExperienceService = Depends(get_experience_service),
 ):
     experience = service.get_by_id(experience_id)
 
-    if experience is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Experience not found",
-        )
+    service.delete(
+        experience,
+        current_user,
+    )
 
-    if experience.user_id != current_user.id:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Permission denied.",
-        )
-
-    service.delete(experience)
+    return None
