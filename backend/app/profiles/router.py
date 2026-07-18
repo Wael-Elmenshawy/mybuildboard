@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, File, UploadFile, status
 
 from app.api.deps import get_profile_service
 from app.auth.dependencies import get_current_user
@@ -59,3 +59,37 @@ def update_profile(
         current_user.id,
         profile,
     )
+
+
+@router.post(
+    "/me/avatar",
+    response_model=ProfileResponse,
+)
+async def upload_avatar(
+    file: UploadFile = File(...),
+    current_user: User = Depends(get_current_user),
+    service: ProfileService = Depends(get_profile_service),
+):
+    file_bytes = await file.read()
+
+    return service.upload_avatar(
+        current_user.id,
+        file_bytes=file_bytes,
+        filename=file.filename,
+        content_type=file.content_type,
+    )
+
+
+@router.delete(
+    "/me/avatar",
+    status_code=status.HTTP_204_NO_CONTENT,
+)
+def delete_avatar(
+    current_user: User = Depends(get_current_user),
+    service: ProfileService = Depends(get_profile_service),
+):
+    service.remove_avatar(
+        current_user.id,
+    )
+
+    return None

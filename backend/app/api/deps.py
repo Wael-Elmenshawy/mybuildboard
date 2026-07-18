@@ -1,3 +1,6 @@
+from app.assets.repository import AssetRepository
+from app.assets.service import AssetService
+from app.integrations.cloudflare import CloudflareStorageProvider
 from app.portfolio.service import PortfolioService
 from app.users.repository import UserRepository
 from app.profiles.repository import ProfileRepository
@@ -25,6 +28,7 @@ from app.skills.repository import SkillRepository
 from app.skills.service import SkillService
 from app.social_links.repository import SocialLinkRepository
 from app.social_links.service import SocialLinkService
+from app.storage.service import StorageService
 from app.users.service import UserService
 
 
@@ -37,7 +41,15 @@ def get_user_service(
 def get_profile_service(
     db: Session = Depends(get_db),
 ) -> ProfileService:
-    return ProfileService(db)
+    profile_repository = ProfileRepository(db)
+    asset_service = AssetService(AssetRepository(db))
+    storage_service = StorageService(CloudflareStorageProvider())
+
+    return ProfileService(
+        repository=profile_repository,
+        asset_service=asset_service,
+        storage_service=storage_service,
+    )
 
 
 def get_auth_service(
