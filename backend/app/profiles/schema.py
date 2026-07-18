@@ -6,7 +6,6 @@ class ProfileBase(BaseModel):
     headline: str | None = None
     bio: str | None = None
 
-    avatar_url: HttpUrl | None = None
     cover_url: HttpUrl | None = None
     website: HttpUrl | None = None
 
@@ -28,6 +27,7 @@ class ProfileUpdate(ProfileBase):
 class ProfileResponse(ProfileBase):
     id: str
     user_id: str
+    avatar_url: HttpUrl | None = None
 
     model_config = ConfigDict(
         from_attributes=True,
