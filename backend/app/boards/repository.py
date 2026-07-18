@@ -4,12 +4,19 @@ import uuid
 
 from sqlalchemy.orm import Session
 
-from app.boards.model import Board
+from app.boards.model import (
+    Board,
+    BoardStatus,
+    BoardVisibility,
+)
 from app.shared.repositories.base_repository import BaseRepository
 
 
 class BoardRepository(BaseRepository[Board]):
-    def __init__(self, db: Session):
+    def __init__(
+        self,
+        db: Session,
+    ):
         super().__init__(db, Board)
 
     def get_by_slug(
@@ -30,4 +37,18 @@ class BoardRepository(BaseRepository[Board]):
             self.db.query(Board)
             .filter(Board.owner_id == owner_id)
             .all()
+        )
+
+    def get_public_board_by_owner(
+        self,
+        owner_id: uuid.UUID,
+    ) -> Board | None:
+        return (
+            self.db.query(Board)
+            .filter(
+                Board.owner_id == owner_id,
+                Board.visibility == BoardVisibility.PUBLIC,
+                Board.status == BoardStatus.ACTIVE,
+            )
+            .first()
         )

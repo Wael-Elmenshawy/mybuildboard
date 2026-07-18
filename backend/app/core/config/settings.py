@@ -15,6 +15,13 @@ class Settings(BaseSettings):
 
     frontend_url: str
 
+    # Cloudflare R2
+    r2_account_id: str
+    r2_bucket_name: str
+    r2_access_key_id: str
+    r2_secret_access_key: str
+    r2_public_url: str
+
     model_config = SettingsConfigDict(
         env_file=".env",
         case_sensitive=False,

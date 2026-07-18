@@ -1,3 +1,4 @@
+from app.portfolio.router import router as portfolio_router
 from app.experiences.router import router as experiences_router
 from fastapi import APIRouter
 
@@ -27,3 +28,4 @@ router.include_router(educations_router)
 router.include_router(social_links_router)
 router.include_router(achievements_router)
 router.include_router(github_router)
+router.include_router(portfolio_router)

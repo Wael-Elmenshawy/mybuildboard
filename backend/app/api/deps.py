@@ -1,3 +1,6 @@
+from app.portfolio.service import PortfolioService
+from app.users.repository import UserRepository
+from app.profiles.repository import ProfileRepository
 from app.experiences.repository import ExperienceRepository
 from app.experiences.service import ExperienceService
 from fastapi import Depends
@@ -108,3 +111,18 @@ def get_github_service(
     connection_repository = GithubConnectionRepository(db)
     repo_repository = GithubRepoRepository(db)
     return GithubService(connection_repository, repo_repository)
+def get_portfolio_service(
+    db: Session = Depends(get_db),
+) -> PortfolioService:
+    return PortfolioService(
+        user_repository=UserRepository(db),
+        board_repository=BoardRepository(db),
+        profile_repository=ProfileRepository(db),
+        project_repository=ProjectRepository(db),
+        skill_repository=SkillRepository(db),
+        experience_repository=ExperienceRepository(db),
+        education_repository=EducationRepository(db),
+        certificate_repository=CertificateRepository(db),
+        social_link_repository=SocialLinkRepository(db),
+        achievement_repository=AchievementRepository(db),
+    )
