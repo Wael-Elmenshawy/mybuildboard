@@ -11,6 +11,7 @@ from app.shared.database.base_model import BaseModel
 from app.storage.constants import StorageFolder
 
 if TYPE_CHECKING:
+    from app.profiles.model import Profile
     from app.users.model import User
 
 
@@ -70,4 +71,9 @@ class Asset(BaseModel):
 
     owner: Mapped["User"] = relationship(
         back_populates="assets",
+    )
+
+    profile_avatar: Mapped["Profile | None"] = relationship(
+        back_populates="avatar",
+        uselist=False,
     )

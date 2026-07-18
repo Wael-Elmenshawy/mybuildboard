@@ -1,8 +1,13 @@
+from typing import TYPE_CHECKING
+
 from sqlalchemy import Boolean, ForeignKey, String
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.shared.database.base_model import BaseModel
+
+if TYPE_CHECKING:
+    from app.assets.model import Asset
 
 
 class Profile(BaseModel):
@@ -12,6 +17,12 @@ class Profile(BaseModel):
         ForeignKey("users.id", ondelete="CASCADE"),
         unique=True,
         nullable=False,
+    )
+
+    avatar_asset_id: Mapped[UUID | None] = mapped_column(
+        ForeignKey("assets.id", ondelete="SET NULL"),
+        unique=True,
+        nullable=True,
     )
 
     full_name: Mapped[str | None] = mapped_column(String(150))
@@ -40,4 +51,9 @@ class Profile(BaseModel):
     user = relationship(
         "User",
         back_populates="profile",
+    )
+
+    avatar: Mapped["Asset | None"] = relationship(
+        "Asset",
+        back_populates="profile_avatar",
     )
