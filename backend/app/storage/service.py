@@ -81,6 +81,19 @@ class StorageService:
             object_key=object_key,
         )
 
+    def get_public_url(
+        self,
+        *,
+        object_key: str,
+    ) -> str:
+        """
+        Generate the public URL for an object.
+        """
+
+        return self.provider.generate_public_url(
+            object_key=object_key,
+        )
+
     @staticmethod
     def _validate_file_size(
         file_bytes: bytes,

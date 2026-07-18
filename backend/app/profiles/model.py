@@ -31,8 +31,6 @@ class Profile(BaseModel):
 
     bio: Mapped[str | None] = mapped_column(String(2000))
 
-    avatar_url: Mapped[str | None] = mapped_column(String(500))
-
     cover_url: Mapped[str | None] = mapped_column(String(500))
 
     website: Mapped[str | None] = mapped_column(String(255))
