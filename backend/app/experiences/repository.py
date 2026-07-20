@@ -19,11 +19,7 @@ class ExperienceRepository(BaseRepository[Experience]):
         self,
         experience_id: uuid.UUID,
     ) -> Experience | None:
-        return (
-            self.db.query(Experience)
-            .filter(Experience.id == experience_id)
-            .first()
-        )
+        return self.db.query(Experience).filter(Experience.id == experience_id).first()
 
     def get_all_by_user(
         self,

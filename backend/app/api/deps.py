@@ -64,6 +64,7 @@ def get_board_service(
     repository = BoardRepository(db)
     return BoardService(repository)
 
+
 def get_project_service(
     db: Session = Depends(get_db),
 ) -> ProjectService:
@@ -74,6 +75,7 @@ def get_project_service(
         repository=project_repository,
         github_repo_repository=github_repo_repository,
     )
+
 
 def get_skill_service(
     db: Session = Depends(get_db),
@@ -123,6 +125,8 @@ def get_github_service(
     connection_repository = GithubConnectionRepository(db)
     repo_repository = GithubRepoRepository(db)
     return GithubService(connection_repository, repo_repository)
+
+
 def get_portfolio_service(
     db: Session = Depends(get_db),
 ) -> PortfolioService:

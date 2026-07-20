@@ -19,11 +19,7 @@ class ProjectRepository(BaseRepository[Project]):
         self,
         slug: str,
     ) -> Project | None:
-        return (
-            self.db.query(Project)
-            .filter(Project.slug == slug)
-            .first()
-        )
+        return self.db.query(Project).filter(Project.slug == slug).first()
 
     def get_all_by_board(
         self,
@@ -40,12 +36,7 @@ class ProjectRepository(BaseRepository[Project]):
         self,
         slug: str,
     ) -> bool:
-        return (
-            self.db.query(Project)
-            .filter(Project.slug == slug)
-            .first()
-            is not None
-        )
+        return self.db.query(Project).filter(Project.slug == slug).first() is not None
 
     def slug_exists_except(
         self,

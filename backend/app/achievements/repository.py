@@ -14,9 +14,7 @@ class AchievementRepository(BaseRepository[Achievement]):
 
     def get_by_id(self, achievement_id: uuid.UUID) -> Achievement | None:
         return (
-            self.db.query(Achievement)
-            .filter(Achievement.id == achievement_id)
-            .first()
+            self.db.query(Achievement).filter(Achievement.id == achievement_id).first()
         )
 
     def get_all_by_user(self, user_id: uuid.UUID) -> list[Achievement]:

@@ -6,7 +6,9 @@ from app.core.middleware import RequestIDMiddleware
 
 app = FastAPI(
     title="MyBuildBoard API",
-    description=("Backend API for MyBuildBoard - A professional developer portfolio platform."),
+    description=(
+        "Backend API for MyBuildBoard - A professional developer portfolio platform."
+    ),
     version="1.0.0",
     docs_url="/docs",
     redoc_url="/redoc",

@@ -14,9 +14,7 @@ class CertificateRepository(BaseRepository[Certificate]):
 
     def get_by_id(self, certificate_id: uuid.UUID) -> Certificate | None:
         return (
-            self.db.query(Certificate)
-            .filter(Certificate.id == certificate_id)
-            .first()
+            self.db.query(Certificate).filter(Certificate.id == certificate_id).first()
         )
 
     def get_all_by_user(self, user_id: uuid.UUID) -> list[Certificate]:

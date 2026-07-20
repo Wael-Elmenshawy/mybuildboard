@@ -23,21 +23,13 @@ class BoardRepository(BaseRepository[Board]):
         self,
         slug: str,
     ) -> Board | None:
-        return (
-            self.db.query(Board)
-            .filter(Board.slug == slug)
-            .first()
-        )
+        return self.db.query(Board).filter(Board.slug == slug).first()
 
     def get_all_by_owner(
         self,
         owner_id: uuid.UUID,
     ) -> list[Board]:
-        return (
-            self.db.query(Board)
-            .filter(Board.owner_id == owner_id)
-            .all()
-        )
+        return self.db.query(Board).filter(Board.owner_id == owner_id).all()
 
     def get_public_board_by_owner(
         self,

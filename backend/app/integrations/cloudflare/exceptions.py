@@ -20,7 +20,9 @@ class CloudflareUploadError(CloudflareStorageError):
     Raised when an upload operation fails.
     """
 
-    def __init__(self, message: str = "Failed to upload file to Cloudflare R2.") -> None:
+    def __init__(
+        self, message: str = "Failed to upload file to Cloudflare R2."
+    ) -> None:
         super().__init__(message)
 
 
@@ -29,7 +31,9 @@ class CloudflareDeleteError(CloudflareStorageError):
     Raised when a delete operation fails.
     """
 
-    def __init__(self, message: str = "Failed to delete file from Cloudflare R2.") -> None:
+    def __init__(
+        self, message: str = "Failed to delete file from Cloudflare R2."
+    ) -> None:
         super().__init__(message)
 
 

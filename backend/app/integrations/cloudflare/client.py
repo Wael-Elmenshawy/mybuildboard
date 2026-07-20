@@ -34,21 +34,14 @@ class CloudflareClientFactory:
             "R2_BUCKET_NAME": settings.R2_BUCKET_NAME,
         }
 
-        missing = [
-            key
-            for key, value in required_settings.items()
-            if not value
-        ]
+        missing = [key for key, value in required_settings.items() if not value]
 
         if missing:
             raise CloudflareConfigurationError(
-                "Missing Cloudflare R2 configuration: "
-                + ", ".join(missing)
+                "Missing Cloudflare R2 configuration: " + ", ".join(missing)
             )
 
-        endpoint_url = (
-            f"https://{settings.R2_ACCOUNT_ID}.r2.cloudflarestorage.com"
-        )
+        endpoint_url = f"https://{settings.R2_ACCOUNT_ID}.r2.cloudflarestorage.com"
 
         return boto3.client(
             service_name="s3",

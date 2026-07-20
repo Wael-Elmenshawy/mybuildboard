@@ -24,7 +24,9 @@ def create_state_token(user_id: uuid.UUID) -> str:
 
 def verify_state_token(token: str) -> uuid.UUID | None:
     try:
-        payload = jwt.decode(token, settings.secret_key, algorithms=[settings.algorithm])
+        payload = jwt.decode(
+            token, settings.secret_key, algorithms=[settings.algorithm]
+        )
     except JWTError:
         return None
 

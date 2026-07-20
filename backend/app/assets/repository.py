@@ -26,11 +26,7 @@ class AssetRepository(BaseRepository[Asset]):
         self,
         storage_key: str,
     ) -> Asset | None:
-        return (
-            self.db.query(Asset)
-            .filter(Asset.storage_key == storage_key)
-            .first()
-        )
+        return self.db.query(Asset).filter(Asset.storage_key == storage_key).first()
 
     def get_by_owner(
         self,

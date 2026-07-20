@@ -92,6 +92,7 @@ class ProfileService:
 
         try:
             asset = self.asset_service.create(asset_data)
+
         except Exception:
             self.storage_service.delete(
                 object_key=upload_result.object_key,
@@ -119,10 +120,16 @@ class ProfileService:
         updated_profile.avatar_url = upload_result.public_url
 
         if previous_avatar is not None:
-            self._cleanup_avatar_resources(
-                object_key=previous_avatar.storage_key,
-                asset_id=previous_avatar.id,
-            )
+            try:
+                self._cleanup_avatar_resources(
+                    object_key=previous_avatar.storage_key,
+                    asset_id=previous_avatar.id,
+                )
+            except Exception as exc:
+                raise HTTPException(
+                    status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                    detail=str(exc),
+                )
 
         return updated_profile
 

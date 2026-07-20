@@ -16,7 +16,6 @@ from app.projects.model import (
     ProjectVisibility,
 )
 
-
 SLUG_PATTERN = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 
 
@@ -85,9 +84,7 @@ class ProjectCreate(BaseModel):
                 continue
 
             if len(item) > 50:
-                raise ValueError(
-                    "Technology name is too long."
-                )
+                raise ValueError("Technology name is too long.")
 
             if item not in cleaned:
                 cleaned.append(item)
@@ -168,9 +165,7 @@ class ProjectUpdate(BaseModel):
                 continue
 
             if len(item) > 50:
-                raise ValueError(
-                    "Technology name is too long."
-                )
+                raise ValueError("Technology name is too long.")
 
             if item not in cleaned:
                 cleaned.append(item)

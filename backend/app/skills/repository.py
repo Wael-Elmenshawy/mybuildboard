@@ -22,11 +22,7 @@ class SkillRepository(BaseRepository[Skill]):
         self,
         skill_id: uuid.UUID,
     ) -> Skill | None:
-        return (
-            self.db.query(Skill)
-            .filter(Skill.id == skill_id)
-            .first()
-        )
+        return self.db.query(Skill).filter(Skill.id == skill_id).first()
 
     def get_all_by_user(
         self,

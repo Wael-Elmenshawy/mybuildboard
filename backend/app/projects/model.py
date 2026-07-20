@@ -76,9 +76,9 @@ class Project(BaseModel):
         nullable=True,
     )
     technologies: Mapped[list[str]] = mapped_column(
-    ARRAY(String),
-    default=list,
-    nullable=False,
+        ARRAY(String),
+        default=list,
+        nullable=False,
     )
 
     display_order: Mapped[int] = mapped_column(
@@ -93,33 +93,33 @@ class Project(BaseModel):
         nullable=False,
     )
     is_imported_from_github: Mapped[bool] = mapped_column(
-    Boolean,
-    default=False,
-    nullable=False,
+        Boolean,
+        default=False,
+        nullable=False,
     )
     source_github_repo_id: Mapped[uuid.UUID | None] = mapped_column(
-    UUID(as_uuid=True),
-    nullable=True,
+        UUID(as_uuid=True),
+        nullable=True,
     )
 
     visibility: Mapped[ProjectVisibility] = mapped_column(
-    SqlEnum(
-        ProjectVisibility,
-        values_callable=lambda enum: [e.value for e in enum],
-        native_enum=True,
-    ),
-    default=ProjectVisibility.PUBLIC,
-    nullable=False,
+        SqlEnum(
+            ProjectVisibility,
+            values_callable=lambda enum: [e.value for e in enum],
+            native_enum=True,
+        ),
+        default=ProjectVisibility.PUBLIC,
+        nullable=False,
     )
 
     status: Mapped[ProjectStatus] = mapped_column(
-    SqlEnum(
-        ProjectStatus,
-        values_callable=lambda enum: [e.value for e in enum],
-        native_enum=True,
-    ),
-    default=ProjectStatus.PUBLISHED,
-    nullable=False,
+        SqlEnum(
+            ProjectStatus,
+            values_callable=lambda enum: [e.value for e in enum],
+            native_enum=True,
+        ),
+        default=ProjectStatus.PUBLISHED,
+        nullable=False,
     )
 
     board: Mapped[Board] = relationship(

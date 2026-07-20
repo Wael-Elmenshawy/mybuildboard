@@ -13,11 +13,7 @@ class SocialLinkRepository(BaseRepository[SocialLink]):
         super().__init__(db, SocialLink)
 
     def get_by_id(self, social_link_id: uuid.UUID) -> SocialLink | None:
-        return (
-            self.db.query(SocialLink)
-            .filter(SocialLink.id == social_link_id)
-            .first()
-        )
+        return self.db.query(SocialLink).filter(SocialLink.id == social_link_id).first()
 
     def get_all_by_user(self, user_id: uuid.UUID) -> list[SocialLink]:
         return (

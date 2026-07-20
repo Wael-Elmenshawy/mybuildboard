@@ -1,3 +1,5 @@
+from uuid import UUID
+
 from pydantic import BaseModel, ConfigDict, HttpUrl
 
 
@@ -25,8 +27,8 @@ class ProfileUpdate(ProfileBase):
 
 
 class ProfileResponse(ProfileBase):
-    id: str
-    user_id: str
+    id: UUID
+    user_id: UUID
     avatar_url: HttpUrl | None = None
 
     model_config = ConfigDict(

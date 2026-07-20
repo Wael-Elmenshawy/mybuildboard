@@ -104,7 +104,7 @@ class StorageService:
 
         if len(file_bytes) > MAX_FILE_SIZE:
             raise HTTPException(
-                status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
+                status_code=status.HTTP_413_CONTENT_TOO_LARGE,
                 detail="File exceeds the maximum allowed size.",
             )
 

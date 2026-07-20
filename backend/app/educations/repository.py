@@ -13,11 +13,7 @@ class EducationRepository(BaseRepository[Education]):
         super().__init__(db, Education)
 
     def get_by_id(self, education_id: uuid.UUID) -> Education | None:
-        return (
-            self.db.query(Education)
-            .filter(Education.id == education_id)
-            .first()
-        )
+        return self.db.query(Education).filter(Education.id == education_id).first()
 
     def get_all_by_user(self, user_id: uuid.UUID) -> list[Education]:
         return (

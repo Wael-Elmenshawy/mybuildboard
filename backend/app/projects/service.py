@@ -95,11 +95,7 @@ class ProjectService:
                 detail="Repository already imported.",
             )
 
-        base_slug = (
-            repo.name.lower()
-            .replace(" ", "-")
-            .replace("_", "-")
-        )
+        base_slug = repo.name.lower().replace(" ", "-").replace("_", "-")
 
         slug = base_slug
         counter = 1
