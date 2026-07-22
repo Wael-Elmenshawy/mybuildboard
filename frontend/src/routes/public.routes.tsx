@@ -3,10 +3,7 @@ import { Route } from "react-router-dom";
 import PublicOnlyRoute from "./PublicOnlyRoute";
 
 import LandingPage from "@/features/landing/pages/LandingPage";
-
-function LoginPlaceholder() {
-  return <h1>Login</h1>;
-}
+import LoginPage from "@/pages/LoginPage";
 
 const publicRoutes = (
   <>
@@ -18,7 +15,7 @@ const publicRoutes = (
     <Route element={<PublicOnlyRoute />}>
       <Route
         path="/login"
-        element={<LoginPlaceholder />}
+        element={<LoginPage />}
       />
     </Route>
   </>
