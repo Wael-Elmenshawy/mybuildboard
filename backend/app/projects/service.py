@@ -31,7 +31,7 @@ class ProjectService:
         current_user: User,
     ) -> Project:
 
-        board = self.board_repository.get(data.board_id)
+        board = self.board_repository.get_by_id(data.board_id)
 
         if board is None:
             raise HTTPException(
@@ -52,7 +52,7 @@ class ProjectService:
             )
 
         project = Project(
-            **data.model_dump(),
+            **data.model_dump(mode="json"),
         )
 
         return self.repository.create(project)
@@ -64,7 +64,7 @@ class ProjectService:
         current_user: User,
     ) -> Project:
 
-        board = self.board_repository.get(board_id)
+        board = self.board_repository.get_by_id(board_id)
 
         if board is None:
             raise HTTPException(
@@ -78,7 +78,7 @@ class ProjectService:
                 detail="You do not own this board.",
             )
 
-        repo = self.github_repo_repository.get(github_repo_id)
+        repo = self.github_repo_repository.get_by_id(github_repo_id)
 
         if repo is None:
             raise HTTPException(
@@ -109,7 +109,7 @@ class ProjectService:
             title=repo.name,
             slug=slug,
             short_description=repo.description,
-            github_url=repo.html_url,
+            github_url=str(repo.html_url) if repo.html_url else None,
             technologies=[repo.language] if repo.language else [],
             is_imported_from_github=True,
             source_github_repo_id=repo.id,
@@ -137,7 +137,7 @@ class ProjectService:
         board_id: uuid.UUID,
     ) -> list[Project]:
 
-        board = self.board_repository.get(board_id)
+        board = self.board_repository.get_by_id(board_id)
 
         if board is None:
             raise HTTPException(
@@ -160,7 +160,10 @@ class ProjectService:
                 detail="You do not own this project.",
             )
 
-        values = data.model_dump(exclude_unset=True)
+        values = data.model_dump(
+            mode="json",
+            exclude_unset=True,
+        )
 
         if (
             "slug" in values
