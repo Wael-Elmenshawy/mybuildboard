@@ -8,7 +8,9 @@ from app.core.config import settings
 def create_access_token(data: dict) -> str:
     to_encode = data.copy()
 
-    expire = datetime.now(UTC) + timedelta(minutes=settings.access_token_expire_minutes)
+    expire = datetime.now(UTC) + timedelta(
+        minutes=settings.access_token_expire_minutes
+    )
 
     to_encode.update({"exp": expire})
 
@@ -26,6 +28,7 @@ def verify_token(token: str):
             settings.secret_key,
             algorithms=[settings.algorithm],
         )
+
         return payload
 
     except JWTError:
