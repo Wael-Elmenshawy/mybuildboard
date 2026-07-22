@@ -1,4 +1,10 @@
 import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+
+import {
   createSocialLink,
   deleteSocialLink,
   getMySocialLinks,
@@ -10,21 +16,12 @@ import type {
   UpdateSocialLinkRequest,
 } from "../types/socialLink";
 
-import {
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
-
 const QUERY_KEY = ["social-links"];
 
 export function useSocialLinks() {
   return useQuery({
     queryKey: QUERY_KEY,
-    queryFn: async () => {
-      const { data } = await getMySocialLinks();
-      return data;
-    },
+    queryFn: getMySocialLinks,
   });
 }
 
