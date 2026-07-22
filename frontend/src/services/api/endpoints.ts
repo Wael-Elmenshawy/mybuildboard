@@ -1,3 +1,4 @@
+
 export const ENDPOINTS = {
   auth: {
     login: "/api/v1/auth/login",
@@ -23,6 +24,15 @@ export const ENDPOINTS = {
 
     importFromGithub:
       "/api/v1/projects/import-from-github",
+  },
+
+    skills: {
+    base: "/api/v1/skills",
+
+    me: "/api/v1/skills/me",
+
+    byId: (skillId: string) =>
+      `/api/v1/skills/${skillId}`,
   },
 
   socialLinks: {

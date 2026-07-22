@@ -1,3 +1,4 @@
+import SkillsPage from "@/features/skills/pages/SkillsPage";
 import { Route } from "react-router-dom";
 
 import ProtectedRoute from "./ProtectedRoute";
@@ -19,6 +20,10 @@ const protectedRoutes = (
         path="/projects"
         element={<ProjectsPage />}
       />
+     <Route
+       path="/skills"
+       element={<SkillsPage />}
+     />
 
       <Route
         path="/social-links"
