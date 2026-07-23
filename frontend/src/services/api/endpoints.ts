@@ -1,8 +1,22 @@
-
 export const ENDPOINTS = {
   auth: {
     login: "/api/v1/auth/login",
     register: "/api/v1/auth/register",
+  },
+  education: {
+  base: "/api/v1/education",
+
+     me: "/api/v1/education/me",
+
+  byId: (educationId: string) =>
+    `/api/v1/education/${educationId}`,
+  },
+
+  certificates: {
+    base: "/api/v1/certificates",
+     me: "/api/v1/certificates/me",
+     byId: (certificateId: string) =>
+         `/api/v1/certificates/${certificateId}`,
   },
 
   users: {
@@ -26,7 +40,7 @@ export const ENDPOINTS = {
       "/api/v1/projects/import-from-github",
   },
 
-    skills: {
+  skills: {
     base: "/api/v1/skills",
 
     me: "/api/v1/skills/me",
@@ -40,4 +54,13 @@ export const ENDPOINTS = {
 
     me: "/api/v1/social-links/me",
   },
-} as const;
+
+  experiences: {
+    base: "/api/v1/experiences",
+
+    me: "/api/v1/experiences/me",
+
+    byId: (experienceId: string) =>
+      `/api/v1/experiences/${experienceId}`,
+  },
+};
