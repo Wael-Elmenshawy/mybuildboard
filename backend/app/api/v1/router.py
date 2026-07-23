@@ -1,3 +1,4 @@
+from app.dashboard.router import router as dashboard_router
 from fastapi import APIRouter
 
 from app.achievements.router import router as achievements_router
@@ -29,4 +30,4 @@ router.include_router(social_links_router)
 router.include_router(achievements_router)
 router.include_router(github_router)
 router.include_router(portfolio_router)
-
+router.include_router(dashboard_router)
