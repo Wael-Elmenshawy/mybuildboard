@@ -1,41 +1,59 @@
-import QuickActions from "../components/QuickActions";
-import RecentActivity from "../components/RecentActivity";
-import RecentProjects from "../components/RecentProjects";
-import StatsCard from "../components/StatsCard";
-import WelcomeBanner from "../components/WelcomeBanner";
+import React from "react";
 
-const stats = [
-  { title: "Projects", value: 12 },
-  { title: "Skills", value: 24 },
-  { title: "Certificates", value: 8 },
-  { title: "Profile Score", value: "95%" },
-];
+import DashboardStats from "../components/DashboardStats";
+import ProfileCompletionCard from "../components/ProfileCompletionCard";
+import RecentActivityCard from "../components/RecentActivityCard";
+import RecentProjectsCard from "../components/RecentProjectsCard";
+import { useDashboard } from "../hooks/useDashboard";
 
-function DashboardPage() {
+const DashboardPage = () => {
+  const { data, isLoading, isError } = useDashboard();
+
+  if (isLoading) {
+    return (
+      <div className="p-8">
+        Loading dashboard...
+      </div>
+    );
+  }
+
+  if (isError || !data) {
+    return (
+      <div className="p-8 text-red-600">
+        Failed to load dashboard.
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-background p-8">
-      <div className="mx-auto max-w-7xl space-y-8">
-        <WelcomeBanner />
+    <div className="space-y-8">
+      <div>
+        <h1 className="text-3xl font-bold">
+          Dashboard
+        </h1>
 
-        <section className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-          {stats.map((stat) => (
-            <StatsCard
-              key={stat.title}
-              title={stat.title}
-              value={stat.value}
-            />
-          ))}
-        </section>
+        <p className="mt-2 text-gray-500">
+          Welcome back to MyBuildBoard.
+        </p>
+      </div>
 
-        <section className="grid gap-8 xl:grid-cols-2">
-          <RecentProjects />
-          <RecentActivity />
-        </section>
+      <DashboardStats stats={data.stats} />
 
-        <QuickActions />
+      <ProfileCompletionCard
+        completion={data.profile_completion}
+      />
+
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
+        <RecentProjectsCard
+          projects={data.recent_projects}
+        />
+
+        <RecentActivityCard
+          activities={data.recent_activity}
+        />
       </div>
     </div>
   );
-}
+};
 
 export default DashboardPage;
