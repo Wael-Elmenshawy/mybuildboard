@@ -1,3 +1,10 @@
+import { motion } from "framer-motion";
+import { FaCertificate } from "react-icons/fa";
+
+import AppCard from "@/components/ui/AppCard";
+import SectionTitle from "@/components/ui/SectionTitle";
+import AppButton from "@/components/ui/AppButton";
+
 type CertificatesSectionProps = {
   certificates: any[];
 };
@@ -6,50 +13,80 @@ export default function CertificatesSection({
   certificates,
 }: CertificatesSectionProps) {
   return (
-    <section className="rounded-2xl border bg-white p-8 shadow-sm">
-      <h2 className="mb-6 text-2xl font-bold">
-        Certificates
-      </h2>
+    <motion.div
+      initial={{
+        opacity: 0,
+        y: 30,
+      }}
+      whileInView={{
+        opacity: 1,
+        y: 0,
+      }}
+      viewport={{
+        once: true,
+      }}
+      transition={{
+        duration: 0.5,
+      }}
+    >
+      <AppCard>
+        <SectionTitle subtitle="Professional certifications">
+          Certificates
+        </SectionTitle>
 
-      {certificates.length === 0 ? (
-        <p className="text-slate-500">
-          No certificates added yet.
-        </p>
-      ) : (
-        <div className="grid gap-6 md:grid-cols-2">
-          {certificates.map((certificate: any) => (
-            <article
-              key={certificate.id}
-              className="rounded-xl border p-6"
-            >
-              <h3 className="text-xl font-semibold">
-                {certificate.name}
-              </h3>
+        {certificates.length === 0 ? (
+          <p className="text-slate-500 dark:text-slate-400">
+            No certificates available.
+          </p>
+        ) : (
+          <div className="space-y-5">
+            {certificates.map((certificate: any) => (
+              <div
+                key={certificate.id}
+                className="rounded-2xl border border-slate-200 bg-slate-50 p-5 transition-all duration-300 hover:shadow-lg dark:border-slate-700 dark:bg-slate-800"
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex gap-4">
+                    <div className="rounded-full bg-amber-100 p-3 text-amber-600 dark:bg-amber-900/40 dark:text-amber-300">
+                      <FaCertificate />
+                    </div>
 
-              <p className="mt-2 text-blue-600">
-                {certificate.issuer}
-              </p>
+                    <div>
+                      <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
+                        {certificate.name}
+                      </h3>
 
-              {certificate.issue_date && (
-                <p className="mt-2 text-sm text-slate-500">
-                  Issued: {certificate.issue_date}
-                </p>
-              )}
+                      <p className="mt-1 text-blue-600 dark:text-blue-400">
+                        {certificate.issuer}
+                      </p>
 
-              {certificate.credential_url && (
-                <a
-                  href={certificate.credential_url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mt-4 inline-block text-blue-600 hover:underline"
-                >
-                  View Credential →
-                </a>
-              )}
-            </article>
-          ))}
-        </div>
-      )}
-    </section>
+                      {certificate.issue_date && (
+                        <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
+                          Issued: {certificate.issue_date}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  {certificate.credential_url && (
+                    <AppButton
+                      variant="outline"
+                      onClick={() =>
+                        window.open(
+                          certificate.credential_url,
+                          "_blank",
+                        )
+                      }
+                    >
+                      View
+                    </AppButton>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </AppCard>
+    </motion.div>
   );
 }

@@ -22,16 +22,21 @@ export default function LoginForm() {
 
   async function onSubmit(data: LoginFormData) {
     try {
-      await signIn({
+      const response = await signIn({
         username: data.username,
         password: data.password,
       });
 
-      console.log("Login successful");
+      console.clear();
+      console.log("✅ Login successful");
+      console.log("Token:", response.access_token);
 
-      navigate("/");
+      navigate("/dashboard", {
+        replace: true,
+      });
     } catch (error) {
-      console.error(error);
+      console.clear();
+      console.error("❌ Login failed", error);
     }
   }
 

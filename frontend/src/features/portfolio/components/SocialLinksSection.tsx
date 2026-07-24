@@ -1,41 +1,85 @@
+import type { ReactNode } from "react";
+
+import { motion } from "framer-motion";
+import {
+  FaExternalLinkAlt,
+  FaGithub,
+  FaGlobe,
+  FaLinkedin,
+} from "react-icons/fa";
+
+import AppButton from "@/components/ui/AppButton";
+import AppCard from "@/components/ui/AppCard";
+import SectionTitle from "@/components/ui/SectionTitle";
+
 type SocialLinksSectionProps = {
   socialLinks: any[];
+};
+
+const icons: Record<string, ReactNode> = {
+  github: <FaGithub />,
+  linkedin: <FaLinkedin />,
+  website: <FaGlobe />,
 };
 
 export default function SocialLinksSection({
   socialLinks,
 }: SocialLinksSectionProps) {
   return (
-    <section className="rounded-2xl border bg-white p-8 shadow-sm">
-      <h2 className="mb-6 text-2xl font-bold">
-        Social Links
-      </h2>
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5 }}
+    >
+      <AppCard>
+        <SectionTitle subtitle="Connect with me">
+          Social Links
+        </SectionTitle>
 
-      {socialLinks.length === 0 ? (
-        <p className="text-slate-500">
-          No social links added yet.
-        </p>
-      ) : (
-        <div className="grid gap-4 md:grid-cols-2">
-          {socialLinks.map((link: any) => (
-            <a
-              key={link.id}
-              href={link.url}
-              target="_blank"
-              rel="noreferrer"
-              className="rounded-lg border p-4 transition hover:bg-slate-50 hover:shadow-sm"
-            >
-              <div className="font-semibold">
-                {link.platform}
-              </div>
+        {socialLinks.length === 0 ? (
+          <p className="text-slate-500 dark:text-slate-400">
+            No social links available.
+          </p>
+        ) : (
+          <div className="space-y-4">
+            {socialLinks.map((link: any) => (
+              <div
+                key={link.id}
+                className="flex items-center justify-between rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-800"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="rounded-lg bg-blue-100 p-3 text-blue-600 dark:bg-blue-900/40 dark:text-blue-300">
+                    {icons[link.platform?.toLowerCase()] ?? (
+                      <FaGlobe />
+                    )}
+                  </div>
 
-              <div className="mt-1 truncate text-sm text-slate-500">
-                {link.url}
+                  <div>
+                    <p className="font-semibold capitalize text-slate-900 dark:text-white">
+                      {link.platform}
+                    </p>
+
+                    <p className="text-sm text-slate-500">
+                      {link.url}
+                    </p>
+                  </div>
+                </div>
+
+                <AppButton
+                  variant="outline"
+                  onClick={() =>
+                    window.open(link.url, "_blank")
+                  }
+                >
+                  <FaExternalLinkAlt className="mr-2" />
+                  Open
+                </AppButton>
               </div>
-            </a>
-          ))}
-        </div>
-      )}
-    </section>
+            ))}
+          </div>
+        )}
+      </AppCard>
+    </motion.div>
   );
 }

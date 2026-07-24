@@ -1,19 +1,17 @@
-import api from "@/lib/api";
+import { apiClient } from "@/services/api/client";
 
 export interface PortfolioResponse {
-  profile: unknown;
-  skills: unknown[];
-  experiences: unknown[];
-  educations: unknown[];
-  certificates: unknown[];
-  projects: unknown[];
-  social_links: unknown[];
+  profile: any;
+  projects: any[];
+  skills: any[];
+  experiences: any[];
+  educations: any[];
+  certificates: any[];
+  social_links: any[];
 }
 
-export async function getPortfolio(slug: string) {
-  const { data } = await api.get<PortfolioResponse>(
-    `/portfolio/${slug}`,
+export function getPortfolio(slug: string) {
+  return apiClient.get<PortfolioResponse>(
+    `/portfolio/${slug}`
   );
-
-  return data;
 }

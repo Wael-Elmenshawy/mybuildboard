@@ -1,9 +1,13 @@
+import AppContainer from "@/components/ui/AppContainer";
+import AppPage from "@/components/ui/AppPage";
+
 import AboutSection from "@/features/portfolio/components/AboutSection";
 import CertificatesSection from "@/features/portfolio/components/CertificatesSection";
 import ContactCard from "@/features/portfolio/components/ContactCard";
 import EducationSection from "@/features/portfolio/components/EducationSection";
 import ExperienceSection from "@/features/portfolio/components/ExperienceSection";
 import PortfolioHero from "@/features/portfolio/components/PortfolioHero";
+import PortfolioNavbar from "@/features/portfolio/components/PortfolioNavbar";
 import ProjectsSection from "@/features/portfolio/components/ProjectsSection";
 import SkillsSection from "@/features/portfolio/components/SkillsSection";
 import SocialLinksSection from "@/features/portfolio/components/SocialLinksSection";
@@ -11,27 +15,30 @@ import StatsSection from "@/features/portfolio/components/StatsSection";
 import { usePortfolio } from "@/features/portfolio/hooks/usePortfolio";
 
 export default function PortfolioPage() {
-  const { data, isLoading, isError } = usePortfolio("demo");
+  const { data, isLoading, isError } =
+    usePortfolio("demo");
 
   if (isLoading) {
     return (
-      <main className="flex min-h-screen items-center justify-center">
-        Loading...
-      </main>
+      <AppPage className="flex items-center justify-center">
+        Loading portfolio...
+      </AppPage>
     );
   }
 
   if (isError || !data) {
     return (
-      <main className="flex min-h-screen items-center justify-center">
+      <AppPage className="flex items-center justify-center">
         Failed to load portfolio.
-      </main>
+      </AppPage>
     );
   }
 
   return (
-    <main className="min-h-screen bg-slate-100 py-10">
-      <div className="mx-auto max-w-7xl px-6">
+    <AppPage>
+      <PortfolioNavbar />
+
+      <AppContainer className="py-10">
         <PortfolioHero profile={data.profile} />
 
         <div className="mt-8">
@@ -47,24 +54,36 @@ export default function PortfolioPage() {
           <aside className="space-y-8">
             <ContactCard profile={data.profile} />
 
-            <SkillsSection skills={data.skills} />
+            <SkillsSection
+              skills={data.skills}
+            />
 
-            <EducationSection educations={data.educations} />
+            <EducationSection
+              educations={data.educations}
+            />
 
-            <CertificatesSection certificates={data.certificates} />
+            <CertificatesSection
+              certificates={data.certificates}
+            />
 
-            <SocialLinksSection socialLinks={data.social_links} />
+            <SocialLinksSection
+              socialLinks={data.social_links}
+            />
           </aside>
 
           <section className="space-y-8 lg:col-span-2">
             <AboutSection profile={data.profile} />
 
-            <ExperienceSection experiences={data.experiences} />
+            <ExperienceSection
+              experiences={data.experiences}
+            />
 
-            <ProjectsSection projects={data.projects} />
+            <ProjectsSection
+              projects={data.projects}
+            />
           </section>
         </div>
-      </div>
-    </main>
+      </AppContainer>
+    </AppPage>
   );
 }

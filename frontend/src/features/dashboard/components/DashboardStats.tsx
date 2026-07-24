@@ -11,22 +11,28 @@ interface DashboardStatsProps {
   };
 }
 
-const DashboardStats = ({
+export default function DashboardStats({
   stats,
-}: DashboardStatsProps) => {
+}: DashboardStatsProps) {
+  const values = {
+    projects: stats.projects,
+    skills: stats.skills,
+    experiences: stats.experiences,
+    educations: stats.educations,
+    certificates: stats.certificates,
+  };
+
   return (
-    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-5">
+    <section className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-5">
       {dashboardCards.map((card) => (
         <StatCard
           key={card.key}
           title={card.title}
-          value={stats[card.key]}
+          value={values[card.key]}
           icon={card.icon}
           iconClassName={card.iconClassName}
         />
       ))}
-    </div>
+    </section>
   );
-};
-
-export default DashboardStats;
+}

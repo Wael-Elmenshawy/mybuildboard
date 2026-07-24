@@ -1,3 +1,6 @@
+import { FolderOpen } from "lucide-react";
+import { Link } from "react-router-dom";
+
 const projects = [
   {
     id: 1,
@@ -18,26 +21,50 @@ const projects = [
 
 function RecentProjects() {
   return (
-    <section className="rounded-3xl border border-border bg-card p-6 shadow-sm">
+    <section className="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
       <div className="mb-6 flex items-center justify-between">
-        <h2 className="text-xl font-bold">Recent Projects</h2>
+        <div>
+          <h2 className="text-xl font-bold">
+            Recent Projects
+          </h2>
 
-        <button className="text-sm font-medium text-primary hover:underline">
+          <p className="mt-1 text-sm text-gray-500">
+            Your latest projects.
+          </p>
+        </div>
+
+        <Link
+          to="/projects"
+          className="text-sm font-semibold text-cyan-600 hover:underline"
+        >
           View All
-        </button>
+        </Link>
       </div>
 
       <div className="space-y-4">
         {projects.map((project) => (
           <div
             key={project.id}
-            className="rounded-2xl border border-border p-4 transition hover:bg-accent"
+            className="flex items-center justify-between rounded-2xl border border-gray-200 p-4 transition hover:border-cyan-500 hover:shadow-md"
           >
-            <h3 className="font-semibold">{project.name}</h3>
+            <div className="flex items-center gap-4">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-cyan-100">
+                <FolderOpen
+                  size={22}
+                  className="text-cyan-600"
+                />
+              </div>
 
-            <p className="mt-1 text-sm text-muted-foreground">
-              {project.tech}
-            </p>
+              <div>
+                <h3 className="font-semibold">
+                  {project.name}
+                </h3>
+
+                <p className="text-sm text-gray-500">
+                  {project.tech}
+                </p>
+              </div>
+            </div>
           </div>
         ))}
       </div>

@@ -3,53 +3,51 @@ import {
   Briefcase,
   FolderKanban,
   GraduationCap,
-  LucideIcon,
-  Sparkles,
 } from "lucide-react";
 
-export type DashboardCardKey =
-  | "projects"
-  | "skills"
-  | "experiences"
-  | "educations"
-  | "certificates";
+import type { LucideIcon } from "lucide-react";
 
-export interface DashboardCardConfig {
-  key: DashboardCardKey;
+type DashboardCard = {
+  key:
+    | "projects"
+    | "skills"
+    | "experiences"
+    | "educations"
+    | "certificates";
   title: string;
   icon: LucideIcon;
   iconClassName: string;
-}
+};
 
-export const dashboardCards: DashboardCardConfig[] = [
+export const dashboardCards: DashboardCard[] = [
   {
     key: "projects",
     title: "Projects",
     icon: FolderKanban,
-    iconClassName: "text-blue-600",
+    iconClassName: "text-cyan-600",
   },
   {
     key: "skills",
     title: "Skills",
-    icon: Sparkles,
-    iconClassName: "text-purple-600",
+    icon: Award,
+    iconClassName: "text-violet-600",
   },
   {
     key: "experiences",
     title: "Experience",
     icon: Briefcase,
-    iconClassName: "text-orange-600",
+    iconClassName: "text-emerald-600",
   },
   {
     key: "educations",
     title: "Education",
     icon: GraduationCap,
-    iconClassName: "text-green-600",
+    iconClassName: "text-orange-600",
   },
   {
     key: "certificates",
     title: "Certificates",
     icon: Award,
-    iconClassName: "text-amber-600",
+    iconClassName: "text-rose-600",
   },
 ];

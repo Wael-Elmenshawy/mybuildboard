@@ -1,36 +1,15 @@
-import apiClient from "@/lib/api/client";
+import { apiClient } from "@/services/api/client";
+import { ENDPOINTS } from "@/services/api";
 
-export interface DashboardStats {
-  projects: number;
-  skills: number;
-  experiences: number;
-  educations: number;
-  certificates: number;
-}
-
-export interface RecentProject {
-  id: string;
-  title: string;
-  updated_at: string;
-}
-
-export interface RecentActivity {
-  type: string;
-  title: string;
-  created_at: string;
-}
-
-export interface DashboardResponse {
+export interface DashboardSummary {
+  total_projects: number;
+  total_skills: number;
+  total_certificates: number;
   profile_completion: number;
-  stats: DashboardStats;
-  recent_projects: RecentProject[];
-  recent_activity: RecentActivity[];
 }
 
-export const getDashboard = async (): Promise<DashboardResponse> => {
-  const response = await apiClient.get<DashboardResponse>(
-    "/dashboard",
+export function getDashboardSummary() {
+  return apiClient.get<DashboardSummary>(
+    ENDPOINTS.dashboard.summary
   );
-
-  return response.data;
-};
+}

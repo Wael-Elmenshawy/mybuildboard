@@ -1,11 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { getPortfolio } from "../api/portfolioApi";
+import {
+  getPortfolio,
+  type PortfolioResponse,
+} from "../api/portfolioApi";
 
 export function usePortfolio(slug: string) {
-  return useQuery({
+  return useQuery<PortfolioResponse>({
     queryKey: ["portfolio", slug],
     queryFn: () => getPortfolio(slug),
-    enabled: !!slug,
+    enabled: Boolean(slug),
+    staleTime: 1000 * 60 * 5,
   });
 }

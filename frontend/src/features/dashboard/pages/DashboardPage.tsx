@@ -1,59 +1,41 @@
-import React from "react";
-
+import DashboardHeader from "../components/DashboardHeader";
 import DashboardStats from "../components/DashboardStats";
-import ProfileCompletionCard from "../components/ProfileCompletionCard";
-import RecentActivityCard from "../components/RecentActivityCard";
-import RecentProjectsCard from "../components/RecentProjectsCard";
+import QuickActions from "../components/QuickActions";
+import RecentActivity from "../components/RecentActivity";
+import RecentProjects from "../components/RecentProjects";
 import { useDashboard } from "../hooks/useDashboard";
 
-const DashboardPage = () => {
-  const { data, isLoading, isError } = useDashboard();
+export default function DashboardPage() {
+  const { data, isLoading } = useDashboard();
 
-  if (isLoading) {
+  if (isLoading || !data) {
     return (
-      <div className="p-8">
+      <div className="flex min-h-[70vh] items-center justify-center">
         Loading dashboard...
-      </div>
-    );
-  }
-
-  if (isError || !data) {
-    return (
-      <div className="p-8 text-red-600">
-        Failed to load dashboard.
       </div>
     );
   }
 
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold">
-          Dashboard
-        </h1>
+      <DashboardHeader />
 
-        <p className="mt-2 text-gray-500">
-          Welcome back to MyBuildBoard.
-        </p>
-      </div>
-
-      <DashboardStats stats={data.stats} />
-
-      <ProfileCompletionCard
-        completion={data.profile_completion}
+      <DashboardStats
+        stats={{
+          projects: data.total_projects,
+          skills: data.total_skills,
+          experiences: 0,
+          educations: 0,
+          certificates: data.total_certificates,
+        }}
       />
 
-      <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
-        <RecentProjectsCard
-          projects={data.recent_projects}
-        />
+      <QuickActions />
 
-        <RecentActivityCard
-          activities={data.recent_activity}
-        />
+      <div className="grid gap-8 xl:grid-cols-2">
+        <RecentProjects />
+        <RecentActivity />
       </div>
     </div>
   );
-};
-
-export default DashboardPage;
+}

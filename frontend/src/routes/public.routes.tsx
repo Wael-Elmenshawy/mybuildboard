@@ -1,12 +1,24 @@
-import { Route } from "react-router-dom";
+import { Navigate, Route } from "react-router-dom";
 
 import LoginPage from "@/pages/LoginPage";
 import PortfolioPage from "@/pages/PortfolioPage";
 
 const publicRoutes = (
   <>
-    <Route path="/login" element={<LoginPage />} />
-    <Route path="/portfolio" element={<PortfolioPage />} />
+    <Route
+      path="/"
+      element={<Navigate to="/login" replace />}
+    />
+
+    <Route
+      path="/login"
+      element={<LoginPage />}
+    />
+
+    <Route
+      path="/portfolio"
+      element={<PortfolioPage />}
+    />
   </>
 );
 
