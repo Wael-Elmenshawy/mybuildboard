@@ -4,10 +4,9 @@ import uuid
 
 from app.dashboard.repository import DashboardRepository
 from app.dashboard.schema import (
+    ActivityResponse,
     DashboardResponse,
-    DashboardStats,
-    RecentActivity,
-    RecentProject,
+    RecentProjectResponse,
 )
 
 
@@ -22,82 +21,49 @@ class DashboardService:
         self,
         user_id: uuid.UUID,
     ) -> DashboardResponse:
-
         profile = self.repository.get_profile(user_id)
 
-        projects = self.repository.count_projects(user_id)
-        skills = self.repository.count_skills(user_id)
-        experiences = self.repository.count_experiences(user_id)
-        educations = self.repository.count_educations(user_id)
-        certificates = self.repository.count_certificates(user_id)
-
-        recent_projects = self.repository.get_recent_projects(user_id)
-        recent_activity = self.repository.get_recent_activity(user_id)
-
-        completion = 0
+        completed_fields = 0
+        total_fields = 6
 
         if profile:
-            completion += 10
+            fields = [
+                profile.first_name,
+                profile.last_name,
+                profile.headline,
+                profile.bio,
+                profile.location,
+                profile.avatar_asset_id,
+            ]
 
-            if profile.avatar_asset_id:
-                completion += 10
+            completed_fields = sum(
+                1 for value in fields if value
+            )
 
-            if profile.full_name:
-                completion += 10
+        profile_completion = int(
+            (completed_fields / total_fields) * 100
+        )
 
-            if profile.headline:
-                completion += 10
+        recent_projects = [
+            RecentProjectResponse(
+                id=str(project.id),
+                title=project.title,
+            )
+            for project in self.repository.get_recent_projects(user_id)
+        ]
 
-            if profile.bio:
-                completion += 15
-
-            if profile.website:
-                completion += 5
-
-            if profile.country:
-                completion += 5
-
-            if profile.city:
-                completion += 5
-
-        if projects > 0:
-            completion += 10
-
-        if skills > 0:
-            completion += 10
-
-        if experiences > 0:
-            completion += 5
-
-        if educations > 0:
-            completion += 3
-
-        if certificates > 0:
-            completion += 2
+        recent_activity = [
+            ActivityResponse(**activity)
+            for activity in self.repository.get_recent_activity(user_id)
+        ]
 
         return DashboardResponse(
-            profile_completion=completion,
-            stats=DashboardStats(
-                projects=projects,
-                skills=skills,
-                experiences=experiences,
-                educations=educations,
-                certificates=certificates,
-            ),
-            recent_projects=[
-                RecentProject(
-                    id=project.id,
-                    title=project.title,
-                    updated_at=project.updated_at,
-                )
-                for project in recent_projects
-            ],
-            recent_activity=[
-                RecentActivity(
-                    type=activity["type"],
-                    title=activity["title"],
-                    created_at=activity["created_at"],
-                )
-                for activity in recent_activity
-            ],
+            total_projects=self.repository.count_projects(user_id),
+            total_skills=self.repository.count_skills(user_id),
+            total_experiences=self.repository.count_experiences(user_id),
+            total_educations=self.repository.count_educations(user_id),
+            total_certificates=self.repository.count_certificates(user_id),
+            profile_completion=profile_completion,
+            recent_projects=recent_projects,
+            recent_activity=recent_activity,
         )

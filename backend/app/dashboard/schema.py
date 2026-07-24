@@ -1,31 +1,32 @@
+from __future__ import annotations
+
 from datetime import datetime
-from uuid import UUID
 
-from pydantic import BaseModel
-
-
-class DashboardStats(BaseModel):
-    projects: int
-    skills: int
-    experiences: int
-    educations: int
-    certificates: int
+from pydantic import BaseModel, ConfigDict
 
 
-class RecentProject(BaseModel):
-    id: UUID
+class RecentProjectResponse(BaseModel):
+    id: str
     title: str
-    updated_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)
 
 
-class RecentActivity(BaseModel):
+class ActivityResponse(BaseModel):
     type: str
     title: str
     created_at: datetime
 
 
 class DashboardResponse(BaseModel):
+    total_projects: int
+    total_skills: int
+    total_experiences: int
+    total_educations: int
+    total_certificates: int
     profile_completion: int
-    stats: DashboardStats
-    recent_projects: list[RecentProject]
-    recent_activity: list[RecentActivity]
+
+    recent_projects: list[RecentProjectResponse]
+    recent_activity: list[ActivityResponse]
+
+    model_config = ConfigDict(from_attributes=True)
