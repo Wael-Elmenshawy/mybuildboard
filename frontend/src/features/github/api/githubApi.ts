@@ -25,5 +25,5 @@ export function connectGitHub() {
 }
 
 export function importRepository(repositoryId: string) {
-  return apiClient.post(`/github/repositories/${repositoryId}/import`);
+  return apiClient.post(`/projects/import-from-github?github_repo_id=${repositoryId}`);
 }
