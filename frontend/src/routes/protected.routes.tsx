@@ -1,58 +1,145 @@
+import { lazy, Suspense } from "react";
 import { Route } from "react-router-dom";
 
 import ProtectedRoute from "./ProtectedRoute";
 
 import AppLayout from "@/components/layout/AppLayout/AppLayout";
-import CertificatesPage from "@/features/certificates/pages/CertificatesPage";
-import DashboardPage from "@/features/dashboard/pages/DashboardPage";
-import EducationPage from "@/features/education/pages/EducationPage";
-import ExperiencesPage from "@/features/experiences/pages/ExperiencesPage";
-import ProfilePage from "@/features/profile/pages/ProfilePage";
-import ProjectsPage from "@/features/projects/pages/ProjectsPage";
-import SkillsPage from "@/features/skills/pages/SkillsPage";
-import SocialLinksPage from "@/features/social-links/pages/SocialLinksPage";
+
+const DashboardPage = lazy(
+  () =>
+    import(
+      "@/features/dashboard/pages/DashboardPage"
+    ),
+);
+
+const ProfilePage = lazy(
+  () =>
+    import(
+      "@/features/profile/pages/ProfilePage"
+    ),
+);
+
+const ProjectsPage = lazy(
+  () =>
+    import(
+      "@/features/projects/pages/ProjectsPage"
+    ),
+);
+
+const SkillsPage = lazy(
+  () =>
+    import(
+      "@/features/skills/pages/SkillsPage"
+    ),
+);
+
+const ExperiencesPage = lazy(
+  () =>
+    import(
+      "@/features/experiences/pages/ExperiencesPage"
+    ),
+);
+
+const EducationPage = lazy(
+  () =>
+    import(
+      "@/features/education/pages/EducationPage"
+    ),
+);
+
+const CertificatesPage = lazy(
+  () =>
+    import(
+      "@/features/certificates/pages/CertificatesPage"
+    ),
+);
+
+const SocialLinksPage = lazy(
+  () =>
+    import(
+      "@/features/social-links/pages/SocialLinksPage"
+    ),
+);
+
+const loading = (
+  <div className="flex h-full items-center justify-center p-8">
+    Loading...
+  </div>
+);
 
 const protectedRoutes = (
   <Route element={<ProtectedRoute />}>
     <Route element={<AppLayout />}>
       <Route
         path="/dashboard"
-        element={<DashboardPage />}
+        element={
+          <Suspense fallback={loading}>
+            <DashboardPage />
+          </Suspense>
+        }
       />
 
       <Route
         path="/profile"
-        element={<ProfilePage />}
+        element={
+          <Suspense fallback={loading}>
+            <ProfilePage />
+          </Suspense>
+        }
       />
 
       <Route
         path="/projects"
-        element={<ProjectsPage />}
+        element={
+          <Suspense fallback={loading}>
+            <ProjectsPage />
+          </Suspense>
+        }
       />
 
       <Route
         path="/skills"
-        element={<SkillsPage />}
+        element={
+          <Suspense fallback={loading}>
+            <SkillsPage />
+          </Suspense>
+        }
       />
 
       <Route
         path="/experiences"
-        element={<ExperiencesPage />}
+        element={
+          <Suspense fallback={loading}>
+            <ExperiencesPage />
+          </Suspense>
+        }
       />
 
       <Route
         path="/education"
-        element={<EducationPage />}
+        element={
+          <Suspense fallback={loading}>
+            <EducationPage />
+          </Suspense>
+        }
       />
 
       <Route
         path="/certificates"
-        element={<CertificatesPage />}
+        element={
+          <Suspense fallback={loading}>
+            <CertificatesPage />
+          </Suspense>
+        }
       />
 
       <Route
         path="/social-links"
-        element={<SocialLinksPage />}
+        element={
+          <Suspense fallback={loading}>
+            <SocialLinksPage />
+          </Suspense>
+        }
       />
     </Route>
   </Route>
