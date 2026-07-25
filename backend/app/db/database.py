@@ -18,3 +18,6 @@ SessionLocal = sessionmaker(
 
 class Base(DeclarativeBase):
     pass
+
+# Load all SQLAlchemy models
+import app.shared.database.imports
