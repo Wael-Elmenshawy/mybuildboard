@@ -1,15 +1,21 @@
 import { useEffect } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
+import Button from "@/components/ui/Button";
+import Input from "@/components/ui/Input";
+
 import type { Profile } from "../types/profile";
-import type { ProfileFormValues } from "../schema/profileSchema";
+import {
+  profileSchema,
+  type ProfileFormValues,
+} from "../schema/profileSchema";
 
 import { useCreateProfile } from "../mutations/useCreateProfile";
 import { useUpdateProfile } from "../mutations/useUpdateProfile";
 
 type ProfileFormProps = {
   profile?: Profile;
-
   onSuccess?: () => void;
 };
 
@@ -21,7 +27,10 @@ function ProfileForm({
     register,
     handleSubmit,
     reset,
-  } = useForm<ProfileFormValues>();
+    formState: { errors },
+  } = useForm<ProfileFormValues>({
+    resolver: zodResolver(profileSchema),
+  });
 
   const createProfile = useCreateProfile();
 
@@ -76,121 +85,93 @@ function ProfileForm({
       onSubmit={handleSubmit(onSubmit)}
       className="space-y-5"
     >
-      <div>
-        <label className="mb-2 block font-medium">
-          Full Name
-        </label>
+      <Input
+        label="Full Name"
+        {...register("full_name")}
+        error={errors.full_name?.message}
+      />
 
-        <input
-          {...register("full_name")}
-          className="w-full rounded-lg border px-4 py-3"
-        />
-      </div>
+      <Input
+        label="Headline"
+        {...register("headline")}
+        error={errors.headline?.message}
+      />
 
-      <div>
-        <label className="mb-2 block font-medium">
-          Headline
-        </label>
-
-        <input
-          {...register("headline")}
-          className="w-full rounded-lg border px-4 py-3"
-        />
-      </div>
-
-      <div>
-        <label className="mb-2 block font-medium">
+      <div className="flex flex-col gap-1">
+        <label className="text-sm font-medium text-gray-700">
           Bio
         </label>
 
         <textarea
           rows={5}
           {...register("bio")}
-          className="w-full rounded-lg border px-4 py-3"
+          className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+        />
+
+        {errors.bio && (
+          <span className="text-sm text-red-600">
+            {errors.bio.message}
+          </span>
+        )}
+      </div>
+
+      <Input
+        label="Website"
+        {...register("website")}
+        error={errors.website?.message}
+      />
+
+      <Input
+        label="Cover URL"
+        {...register("cover_url")}
+        error={errors.cover_url?.message}
+      />
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <Input
+          label="Country"
+          {...register("country")}
+          error={errors.country?.message}
+        />
+
+        <Input
+          label="City"
+          {...register("city")}
+          error={errors.city?.message}
         />
       </div>
 
-      <div>
-        <label className="mb-2 block font-medium">
-          Website
-        </label>
-
-        <input
-          {...register("website")}
-          className="w-full rounded-lg border px-4 py-3"
-        />
-      </div>
-
-      <div>
-        <label className="mb-2 block font-medium">
-          Cover URL
-        </label>
-
-        <input
-          {...register("cover_url")}
-          className="w-full rounded-lg border px-4 py-3"
-        />
-      </div>
-
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <label className="mb-2 block font-medium">
-            Country
-          </label>
-
-          <input
-            {...register("country")}
-            className="w-full rounded-lg border px-4 py-3"
-          />
-        </div>
-
-        <div>
-          <label className="mb-2 block font-medium">
-            City
-          </label>
-
-          <input
-            {...register("city")}
-            className="w-full rounded-lg border px-4 py-3"
-          />
-        </div>
-      </div>
-
-      <div>
-        <label className="mb-2 block font-medium">
-          Timezone
-        </label>
-
-        <input
-          {...register("timezone")}
-          className="w-full rounded-lg border px-4 py-3"
-        />
-      </div>
+      <Input
+        label="Timezone"
+        {...register("timezone")}
+        error={errors.timezone?.message}
+      />
 
       <div className="flex items-center gap-3">
         <input
           type="checkbox"
           {...register("is_public")}
+          className="h-4 w-4 rounded border-gray-300"
         />
 
-        <label>Public Profile</label>
+        <label className="text-sm font-medium text-gray-700">
+          Public Profile
+        </label>
       </div>
 
       <div className="flex justify-end">
-        <button
+        <Button
           type="submit"
           disabled={loading}
-          className="rounded-lg bg-black px-5 py-3 text-white disabled:opacity-50"
         >
           {loading
             ? "Saving..."
             : profile
               ? "Update Profile"
               : "Create Profile"}
-        </button>
+        </Button>
       </div>
     </form>
   );
 }
 
-export default ProfileForm;
+export default ProfileForm;	
