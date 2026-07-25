@@ -1,6 +1,7 @@
 import {
   BriefcaseBusiness,
   FolderKanban,
+  GitBranch,
   GraduationCap,
   Hammer,
   LayoutDashboard,
@@ -52,6 +53,16 @@ const navigation = [
     ],
   },
   {
+    section: "INTEGRATIONS",
+    items: [
+      {
+        label: "GitHub",
+        href: "/github",
+        icon: GitBranch,
+      },
+    ],
+  },
+  {
     section: "SYSTEM",
     items: [
       {
@@ -86,10 +97,7 @@ function Sidebar() {
 
       <div className="flex-1 overflow-y-auto px-5 py-8">
         {navigation.map((group) => (
-          <div
-            key={group.section}
-            className="mb-10"
-          >
+          <div key={group.section} className="mb-10">
             <p className="mb-4 px-3 text-xs font-bold uppercase tracking-[0.25em] text-slate-400">
               {group.section}
             </p>
@@ -154,3 +162,4 @@ function Sidebar() {
 }
 
 export default Sidebar;
+

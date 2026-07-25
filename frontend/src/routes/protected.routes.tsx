@@ -6,59 +6,39 @@ import ProtectedRoute from "./ProtectedRoute";
 import AppLayout from "@/components/layout/AppLayout/AppLayout";
 
 const DashboardPage = lazy(
-  () =>
-    import(
-      "@/features/dashboard/pages/DashboardPage"
-    ),
+  () => import("@/features/dashboard/pages/DashboardPage"),
 );
 
 const ProfilePage = lazy(
-  () =>
-    import(
-      "@/features/profile/pages/ProfilePage"
-    ),
+  () => import("@/features/profile/pages/ProfilePage"),
 );
 
 const ProjectsPage = lazy(
-  () =>
-    import(
-      "@/features/projects/pages/ProjectsPage"
-    ),
+  () => import("@/features/projects/pages/ProjectsPage"),
 );
 
 const SkillsPage = lazy(
-  () =>
-    import(
-      "@/features/skills/pages/SkillsPage"
-    ),
+  () => import("@/features/skills/pages/SkillsPage"),
 );
 
 const ExperiencesPage = lazy(
-  () =>
-    import(
-      "@/features/experiences/pages/ExperiencesPage"
-    ),
+  () => import("@/features/experiences/pages/ExperiencesPage"),
 );
 
 const EducationPage = lazy(
-  () =>
-    import(
-      "@/features/education/pages/EducationPage"
-    ),
+  () => import("@/features/education/pages/EducationPage"),
 );
 
 const CertificatesPage = lazy(
-  () =>
-    import(
-      "@/features/certificates/pages/CertificatesPage"
-    ),
+  () => import("@/features/certificates/pages/CertificatesPage"),
 );
 
 const SocialLinksPage = lazy(
-  () =>
-    import(
-      "@/features/social-links/pages/SocialLinksPage"
-    ),
+  () => import("@/features/social-links/pages/SocialLinksPage"),
+);
+
+const GitHubPage = lazy(
+  () => import("@/features/github/pages/GitHubPage"),
 );
 
 const loading = (
@@ -138,6 +118,15 @@ const protectedRoutes = (
         element={
           <Suspense fallback={loading}>
             <SocialLinksPage />
+          </Suspense>
+        }
+      />
+
+      <Route
+        path="/github"
+        element={
+          <Suspense fallback={loading}>
+            <GitHubPage />
           </Suspense>
         }
       />
