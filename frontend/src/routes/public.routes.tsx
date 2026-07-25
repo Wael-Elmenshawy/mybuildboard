@@ -1,8 +1,23 @@
+import { lazy, Suspense } from "react";
 import { Navigate, Route } from "react-router-dom";
 
-import LoginPage from "@/pages/LoginPage";
-import NotFoundPage from "@/pages/NotFoundPage";
-import PortfolioPage from "@/pages/PortfolioPage";
+const LoginPage = lazy(
+  () => import("@/pages/LoginPage"),
+);
+
+const PortfolioPage = lazy(
+  () => import("@/pages/PortfolioPage"),
+);
+
+const NotFoundPage = lazy(
+  () => import("@/pages/NotFoundPage"),
+);
+
+const loading = (
+  <div className="flex h-screen items-center justify-center">
+    Loading...
+  </div>
+);
 
 const publicRoutes = (
   <>
@@ -13,17 +28,29 @@ const publicRoutes = (
 
     <Route
       path="/login"
-      element={<LoginPage />}
+      element={
+        <Suspense fallback={loading}>
+          <LoginPage />
+        </Suspense>
+      }
     />
 
     <Route
       path="/portfolio"
-      element={<PortfolioPage />}
+      element={
+        <Suspense fallback={loading}>
+          <PortfolioPage />
+        </Suspense>
+      }
     />
 
     <Route
       path="*"
-      element={<NotFoundPage />}
+      element={
+        <Suspense fallback={loading}>
+          <NotFoundPage />
+        </Suspense>
+      }
     />
   </>
 );
