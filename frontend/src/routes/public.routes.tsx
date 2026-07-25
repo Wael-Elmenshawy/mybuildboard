@@ -1,6 +1,7 @@
 import { Navigate, Route } from "react-router-dom";
 
 import LoginPage from "@/pages/LoginPage";
+import NotFoundPage from "@/pages/NotFoundPage";
 import PortfolioPage from "@/pages/PortfolioPage";
 
 const publicRoutes = (
@@ -18,6 +19,11 @@ const publicRoutes = (
     <Route
       path="/portfolio"
       element={<PortfolioPage />}
+    />
+
+    <Route
+      path="*"
+      element={<NotFoundPage />}
     />
   </>
 );

@@ -18,7 +18,7 @@ const activities = [
   {
     id: 2,
     title: "Added a new skill",
-    description: "React + TypeScript",
+    description: "React • TypeScript",
     icon: Award,
     color: "bg-violet-100 text-violet-600",
     time: "20 min ago",
@@ -43,13 +43,21 @@ const activities = [
 
 function RecentActivity() {
   return (
-    <section className="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
-      <div className="mb-6 flex items-center gap-3">
-        <Activity className="text-cyan-600" />
+    <section className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
+      <div className="mb-8 flex items-center gap-3">
+        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-cyan-50">
+          <Activity className="text-cyan-600" size={22} />
+        </div>
 
-        <h2 className="text-xl font-bold">
-          Recent Activity
-        </h2>
+        <div>
+          <h2 className="text-2xl font-bold text-slate-900">
+            Recent Activity
+          </h2>
+
+          <p className="text-sm text-slate-500">
+            Latest updates across your workspace.
+          </p>
+        </div>
       </div>
 
       <div className="space-y-5">
@@ -59,25 +67,25 @@ function RecentActivity() {
           return (
             <div
               key={activity.id}
-              className="flex items-start gap-4"
+              className="flex items-start gap-4 rounded-2xl border border-slate-100 p-4 transition-all duration-300 hover:border-cyan-200 hover:bg-slate-50"
             >
               <div
-                className={`flex h-12 w-12 items-center justify-center rounded-xl ${activity.color}`}
+                className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ${activity.color}`}
               >
                 <Icon size={22} />
               </div>
 
-              <div className="flex-1">
-                <h3 className="font-semibold">
+              <div className="min-w-0 flex-1">
+                <h3 className="font-semibold text-slate-900">
                   {activity.title}
                 </h3>
 
-                <p className="mt-1 text-sm text-gray-500">
+                <p className="mt-1 text-sm text-slate-500">
                   {activity.description}
                 </p>
               </div>
 
-              <span className="text-xs text-gray-400">
+              <span className="whitespace-nowrap text-xs font-medium text-slate-400">
                 {activity.time}
               </span>
             </div>

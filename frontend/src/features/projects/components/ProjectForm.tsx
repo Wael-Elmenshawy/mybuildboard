@@ -59,9 +59,9 @@ function ProjectForm({
     }
   }, [project, reset]);
 
-  const onSubmit = async (
+  async function onSubmit(
     data: ProjectFormValues,
-  ) => {
+  ) {
     const payload = {
       board_id: boardId,
       title: data.title,
@@ -100,9 +100,8 @@ function ProjectForm({
     }
 
     reset();
-
     onSuccess?.();
-  };
+  }
 
   const loading =
     createProject.isPending ||
@@ -111,67 +110,74 @@ function ProjectForm({
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="space-y-5"
+      className="space-y-6"
     >
       <div>
-        <label className="mb-2 block font-medium">
+        <label className="mb-2 block text-sm font-semibold text-slate-700">
           Project Title
         </label>
 
         <input
           {...register("title")}
-          className="w-full rounded-lg border px-4 py-3"
+          placeholder="MyBuildBoard"
+          className="h-12 w-full rounded-2xl border border-slate-200 px-4 outline-none transition focus:border-cyan-500 focus:ring-4 focus:ring-cyan-100"
         />
       </div>
 
       <div>
-        <label className="mb-2 block font-medium">
+        <label className="mb-2 block text-sm font-semibold text-slate-700">
           Short Description
         </label>
 
         <textarea
           {...register("shortDescription")}
           rows={4}
-          className="w-full rounded-lg border px-4 py-3"
+          placeholder="Describe your project..."
+          className="w-full rounded-2xl border border-slate-200 p-4 outline-none transition focus:border-cyan-500 focus:ring-4 focus:ring-cyan-100"
         />
       </div>
 
-      <div>
-        <label className="mb-2 block font-medium">
-          GitHub URL
-        </label>
+      <div className="grid gap-6 lg:grid-cols-2">
+        <div>
+          <label className="mb-2 block text-sm font-semibold text-slate-700">
+            GitHub URL
+          </label>
 
-        <input
-          {...register("githubUrl")}
-          className="w-full rounded-lg border px-4 py-3"
-        />
+          <input
+            {...register("githubUrl")}
+            placeholder="https://github.com/..."
+            className="h-12 w-full rounded-2xl border border-slate-200 px-4 outline-none transition focus:border-cyan-500 focus:ring-4 focus:ring-cyan-100"
+          />
+        </div>
+
+        <div>
+          <label className="mb-2 block text-sm font-semibold text-slate-700">
+            Live URL
+          </label>
+
+          <input
+            {...register("liveUrl")}
+            placeholder="https://..."
+            className="h-12 w-full rounded-2xl border border-slate-200 px-4 outline-none transition focus:border-cyan-500 focus:ring-4 focus:ring-cyan-100"
+          />
+        </div>
       </div>
 
-      <div>
-        <label className="mb-2 block font-medium">
-          Live URL
-        </label>
-
-        <input
-          {...register("liveUrl")}
-          className="w-full rounded-lg border px-4 py-3"
-        />
-      </div>
-
-      <div className="flex justify-end">
+      <div className="flex justify-end gap-3 border-t border-slate-200 pt-6">
         <button
           type="submit"
           disabled={loading}
-          className="rounded-lg bg-black px-5 py-3 text-white disabled:opacity-50"
+          className="rounded-2xl bg-gradient-to-r from-cyan-600 to-blue-600 px-8 py-3 font-bold text-white shadow-lg transition hover:scale-105 disabled:cursor-not-allowed disabled:opacity-50"
         >
           {loading
             ? "Saving..."
             : project
               ? "Update Project"
-              : "Save Project"}
+              : "Create Project"}
         </button>
       </div>
     </form>
   );
 }
+
 export default ProjectForm;

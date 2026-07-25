@@ -11,91 +11,133 @@ import { NavLink } from "react-router-dom";
 
 const navigation = [
   {
-    label: "Dashboard",
-    href: "/dashboard",
-    icon: LayoutDashboard,
+    section: "MAIN",
+    items: [
+      {
+        label: "Dashboard",
+        href: "/dashboard",
+        icon: LayoutDashboard,
+      },
+    ],
   },
   {
-    label: "Profile",
-    href: "/profile",
-    icon: User,
+    section: "PORTFOLIO",
+    items: [
+      {
+        label: "Profile",
+        href: "/profile",
+        icon: User,
+      },
+      {
+        label: "Projects",
+        href: "/projects",
+        icon: FolderKanban,
+      },
+      {
+        label: "Skills",
+        href: "/skills",
+        icon: Hammer,
+      },
+      {
+        label: "Certificates",
+        href: "/certificates",
+        icon: GraduationCap,
+      },
+      {
+        label: "Experience",
+        href: "/experience",
+        icon: BriefcaseBusiness,
+      },
+    ],
   },
   {
-    label: "Projects",
-    href: "/projects",
-    icon: FolderKanban,
-  },
-  {
-    label: "Skills",
-    href: "/skills",
-    icon: Hammer,
-  },
-  {
-    label: "Certificates",
-    href: "/certificates",
-    icon: GraduationCap,
-  },
-  {
-    label: "Experience",
-    href: "/experience",
-    icon: BriefcaseBusiness,
-  },
-  {
-    label: "Settings",
-    href: "/settings",
-    icon: Settings,
+    section: "SYSTEM",
+    items: [
+      {
+        label: "Settings",
+        href: "/settings",
+        icon: Settings,
+      },
+    ],
   },
 ];
 
 function Sidebar() {
   return (
-    <aside className="flex h-screen w-72 flex-col border-r bg-white">
-      <div className="border-b px-8 py-7">
-        <h1 className="text-3xl font-black">
+    <aside className="flex h-screen w-72 shrink-0 flex-col border-r border-slate-200 bg-white">
+      <div className="border-b border-slate-200 px-8 py-8">
+        <h1 className="text-3xl font-black tracking-tight">
           <span className="text-primary">My</span>BuildBoard
         </h1>
 
-        <p className="mt-2 text-sm text-muted-foreground">
-          Developer Workspace
+        <p className="mt-2 text-sm text-slate-500">
+          Build • Showcase • Grow
         </p>
       </div>
 
-      <nav className="flex-1 space-y-2 p-5">
-        {navigation.map((item) => {
-          const Icon = item.icon;
+      <div className="flex-1 overflow-y-auto px-5 py-6">
+        {navigation.map((group) => (
+          <div
+            key={group.section}
+            className="mb-8"
+          >
+            <p className="mb-3 px-3 text-xs font-bold uppercase tracking-[0.2em] text-slate-400">
+              {group.section}
+            </p>
 
-          return (
-            <NavLink
-              key={item.href}
-              to={item.href}
-              className={({ isActive }) =>
-                `flex items-center gap-4 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200 ${
-                  isActive
-                    ? "bg-primary text-primary-foreground shadow-md"
-                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                }`
-              }
-            >
-              <Icon size={20} strokeWidth={2} />
+            <div className="space-y-2">
+              {group.items.map((item) => {
+                const Icon = item.icon;
 
-              <span>{item.label}</span>
-            </NavLink>
-          );
-        })}
-      </nav>
+                return (
+                  <NavLink
+                    key={item.href}
+                    to={item.href}
+                    className={({ isActive }) =>
+                      `flex items-center gap-4 rounded-2xl px-4 py-3 text-sm font-medium transition-all duration-200 ${
+                        isActive
+                          ? "bg-primary text-white shadow-lg"
+                          : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                      }`
+                    }
+                  >
+                    <Icon
+                      size={20}
+                      strokeWidth={2}
+                    />
 
-      <div className="border-t p-5">
-        <div className="rounded-2xl bg-primary p-5 text-primary-foreground">
-          <h3 className="font-bold">
-            Complete Your Profile
+                    <span>{item.label}</span>
+                  </NavLink>
+                );
+              })}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="border-t border-slate-200 p-5">
+        <div className="rounded-3xl bg-gradient-to-br from-primary to-indigo-600 p-6 text-white shadow-xl">
+          <h3 className="text-lg font-bold">
+            Profile Completion
           </h3>
 
-          <p className="mt-2 text-sm opacity-90">
-            You're 95% done. Finish your profile to unlock your public developer
-            board.
+          <p className="mt-2 text-sm text-white/90">
+            You're almost there.
+            Complete your profile and publish your developer board.
           </p>
 
-          <button className="mt-4 w-full rounded-lg bg-white py-2 font-semibold text-primary transition hover:opacity-90">
+          <div className="mt-5">
+            <div className="mb-2 flex justify-between text-xs">
+              <span>95%</span>
+              <span>Complete</span>
+            </div>
+
+            <div className="h-2 overflow-hidden rounded-full bg-white/25">
+              <div className="h-full w-[95%] rounded-full bg-white" />
+            </div>
+          </div>
+
+          <button className="mt-6 w-full rounded-xl bg-white py-3 font-semibold text-primary transition hover:scale-[1.02]">
             Continue
           </button>
         </div>

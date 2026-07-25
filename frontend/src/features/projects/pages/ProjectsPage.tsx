@@ -18,9 +18,7 @@ function ProjectsPage() {
   const boardId = boards?.[0]?.id ?? "";
 
   const [open, setOpen] = useState(false);
-
   const [search, setSearch] = useState("");
-
   const [selectedProject, setSelectedProject] =
     useState<Project>();
 
@@ -34,17 +32,13 @@ function ProjectsPage() {
     useDeleteProject(boardId);
 
   const filteredProjects = useMemo(() => {
-    if (!projects) {
-      return [];
-    }
+    if (!projects) return [];
 
     const keyword = search
       .trim()
       .toLowerCase();
 
-    if (!keyword) {
-      return projects;
-    }
+    if (!keyword) return projects;
 
     return projects.filter((project) => {
       return (
@@ -94,33 +88,35 @@ function ProjectsPage() {
 
   if (isLoading) {
     return (
-      <div className="mx-auto max-w-7xl p-8">
+      <div className="space-y-10">
         <ProjectsHeader
           onCreate={openCreateDialog}
         />
 
-        <p>Loading projects...</p>
+        <div className="rounded-3xl bg-white p-16 text-center shadow-sm">
+          Loading projects...
+        </div>
       </div>
     );
   }
 
   if (isError) {
     return (
-      <div className="mx-auto max-w-7xl p-8">
+      <div className="space-y-10">
         <ProjectsHeader
           onCreate={openCreateDialog}
         />
 
-        <p className="text-red-500">
+        <div className="rounded-3xl border border-red-200 bg-red-50 p-16 text-center text-red-600">
           Failed to load projects.
-        </p>
+        </div>
       </div>
     );
   }
 
   return (
     <>
-      <div className="mx-auto max-w-7xl p-8">
+      <div className="space-y-10">
         <ProjectsHeader
           onCreate={openCreateDialog}
         />
@@ -130,12 +126,15 @@ function ProjectsPage() {
           onChange={setSearch}
         />
 
-        {filteredProjects.length === 0 ? (
+        {filteredProjects.length ===
+        0 ? (
           <EmptyProjects
-            onCreate={openCreateDialog}
+            onCreate={
+              openCreateDialog
+            }
           />
         ) : (
-          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+          <div className="grid gap-8 md:grid-cols-2 2xl:grid-cols-3">
             {filteredProjects.map(
               (project) => (
                 <ProjectCard

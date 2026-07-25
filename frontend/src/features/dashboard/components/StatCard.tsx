@@ -16,23 +16,33 @@ const StatCard = ({
   iconClassName,
 }: StatCardProps) => {
   return (
-    <Card className="group hover:-translate-y-1 hover:shadow-xl">
-      <div className="flex items-start justify-between">
+    <Card className="group relative overflow-hidden rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-cyan-200 hover:shadow-2xl">
+      <div className="absolute right-0 top-0 h-28 w-28 translate-x-10 -translate-y-10 rounded-full bg-cyan-50 transition group-hover:bg-cyan-100" />
+
+      <div className="relative flex items-start justify-between">
         <div>
-          <p className="text-sm font-medium text-gray-500">
+          <p className="text-sm font-semibold uppercase tracking-wider text-slate-500">
             {title}
           </p>
 
-          <h3 className="mt-3 text-3xl font-bold text-gray-900">
+          <h3 className="mt-4 text-4xl font-black text-slate-900">
             {value}
           </h3>
+
+          <p className="mt-2 text-sm text-slate-400">
+            Total available
+          </p>
         </div>
 
         <div
-          className={`flex h-12 w-12 items-center justify-center rounded-xl bg-gray-100 transition-colors duration-300 group-hover:bg-gray-200 ${iconClassName}`}
+          className={`flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-100 transition-all duration-300 group-hover:scale-110 group-hover:bg-cyan-50 ${iconClassName}`}
         >
-          <Icon size={24} />
+          <Icon size={26} strokeWidth={2.2} />
         </div>
+      </div>
+
+      <div className="relative mt-6 h-2 overflow-hidden rounded-full bg-slate-100">
+        <div className="h-full w-3/4 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600" />
       </div>
     </Card>
   );
