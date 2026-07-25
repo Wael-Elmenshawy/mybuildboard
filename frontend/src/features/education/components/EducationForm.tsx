@@ -1,21 +1,18 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
+import Button from "@/components/ui/Button";
+import Input from "@/components/ui/Input";
+
+import {
+  educationSchema,
+  type EducationFormValues,
+} from "../schema/educationSchema";
+
 import type { Education } from "../types/education";
+
 import { useCreateEducation } from "../mutations/useCreateEducation";
 import { useUpdateEducation } from "../mutations/useUpdateEducation";
-
-type EducationFormValues = {
-  institution: string;
-  degree: string;
-  field_of_study: string;
-  start_date: string;
-  end_date: string;
-  grade: string;
-  description: string;
-  is_current: boolean;
-  display_order: number;
-};
 
 type EducationFormProps = {
   education?: Education;
@@ -41,22 +38,16 @@ function EducationForm({
   useEffect(() => {
     if (education) {
       reset({
-        institution:
-          education.institution,
-        degree:
-          education.degree,
+        institution: education.institution,
+        degree: education.degree,
         field_of_study:
           education.field_of_study ?? "",
-        start_date:
-          education.start_date,
-        end_date:
-          education.end_date ?? "",
-        grade:
-          education.grade ?? "",
+        start_date: education.start_date,
+        end_date: education.end_date ?? "",
+        grade: education.grade ?? "",
         description:
           education.description ?? "",
-        is_current:
-          education.is_current,
+        is_current: education.is_current,
         display_order:
           education.display_order,
       });
@@ -78,6 +69,8 @@ function EducationForm({
   const onSubmit = async (
     data: EducationFormValues,
   ) => {
+    educationSchema.parse(data);
+
     const payload = {
       ...data,
       field_of_study:
@@ -102,7 +95,6 @@ function EducationForm({
     }
 
     reset();
-
     onSuccess?.();
   };
 
@@ -115,75 +107,39 @@ function EducationForm({
       onSubmit={handleSubmit(onSubmit)}
       className="space-y-5"
     >
-      <div>
-        <label className="mb-2 block font-medium">
-          Institution
-        </label>
+      <Input
+        label="Institution"
+        {...register("institution")}
+      />
 
-        <input
-          {...register("institution")}
-          className="w-full rounded-lg border px-4 py-3"
-        />
-      </div>
+      <Input
+        label="Degree"
+        {...register("degree")}
+      />
 
-      <div>
-        <label className="mb-2 block font-medium">
-          Degree
-        </label>
-
-        <input
-          {...register("degree")}
-          className="w-full rounded-lg border px-4 py-3"
-        />
-      </div>
-
-      <div>
-        <label className="mb-2 block font-medium">
-          Field of Study
-        </label>
-
-        <input
-          {...register("field_of_study")}
-          className="w-full rounded-lg border px-4 py-3"
-        />
-      </div>
+      <Input
+        label="Field of Study"
+        {...register("field_of_study")}
+      />
 
       <div className="grid grid-cols-2 gap-4">
-        <div>
-          <label className="mb-2 block font-medium">
-            Start Date
-          </label>
+        <Input
+          type="date"
+          label="Start Date"
+          {...register("start_date")}
+        />
 
-          <input
-            type="date"
-            {...register("start_date")}
-            className="w-full rounded-lg border px-4 py-3"
-          />
-        </div>
-
-        <div>
-          <label className="mb-2 block font-medium">
-            End Date
-          </label>
-
-          <input
-            type="date"
-            {...register("end_date")}
-            className="w-full rounded-lg border px-4 py-3"
-          />
-        </div>
-      </div>
-
-      <div>
-        <label className="mb-2 block font-medium">
-          Grade
-        </label>
-
-        <input
-          {...register("grade")}
-          className="w-full rounded-lg border px-4 py-3"
+        <Input
+          type="date"
+          label="End Date"
+          {...register("end_date")}
         />
       </div>
+
+      <Input
+        label="Grade"
+        {...register("grade")}
+      />
 
       <div>
         <label className="mb-2 block font-medium">
@@ -193,7 +149,7 @@ function EducationForm({
         <textarea
           rows={4}
           {...register("description")}
-          className="w-full rounded-lg border px-4 py-3"
+          className="w-full rounded-lg border border-gray-300 px-4 py-3"
         />
       </div>
 
@@ -202,36 +158,28 @@ function EducationForm({
           type="checkbox"
           {...register("is_current")}
         />
-
         Currently Studying Here
       </label>
 
-      <div>
-        <label className="mb-2 block font-medium">
-          Display Order
-        </label>
-
-        <input
-          type="number"
-          {...register("display_order", {
-            valueAsNumber: true,
-          })}
-          className="w-full rounded-lg border px-4 py-3"
-        />
-      </div>
+      <Input
+        type="number"
+        label="Display Order"
+        {...register("display_order", {
+          valueAsNumber: true,
+        })}
+      />
 
       <div className="flex justify-end">
-        <button
+        <Button
           type="submit"
           disabled={loading}
-          className="rounded-lg bg-black px-5 py-3 text-white disabled:opacity-50"
         >
           {loading
             ? "Saving..."
             : education
               ? "Update Education"
               : "Save Education"}
-        </button>
+        </Button>
       </div>
     </form>
   );
