@@ -1,36 +1,91 @@
-function GitHubPage() {
-  return (
-    <div className="space-y-8">
-      <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
-        <h1 className="text-3xl font-bold text-slate-900">
-          GitHub Integration
-        </h1>
+import { GitBranch, Loader2 } from "lucide-react";
 
-        <p className="mt-3 text-slate-500">
-          Connect your GitHub account and import repositories directly into
-          MyBuildBoard.
-        </p>
+import Button from "@/components/ui/Button";
+import Card from "@/components/ui/Card";
+
+import { useGitHubRepositories } from "../hooks/useGitHub";
+
+export default function GitHubPage() {
+  const {
+    data: repositories,
+    isLoading,
+    isError,
+    refetch,
+  } = useGitHubRepositories();
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center py-20">
+        <Loader2 className="h-8 w-8 animate-spin" />
       </div>
+    );
+  }
 
-      <div className="rounded-3xl border border-dashed border-slate-300 bg-white p-16 text-center">
-        <h2 className="text-2xl font-semibold text-slate-800">
-          GitHub is not connected
+  if (isError) {
+    return (
+      <Card className="p-8 text-center">
+        <h2 className="mb-3 text-xl font-semibold">
+          Failed to load GitHub repositories
         </h2>
 
-        <p className="mt-4 text-slate-500">
-          In the next steps, you'll be able to authenticate with GitHub,
-          synchronize repositories, and import projects into your portfolio.
-        </p>
+        <Button onClick={() => refetch()}>
+          Try Again
+        </Button>
+      </Card>
+    );
+  }
 
-        <button
-          type="button"
-          className="mt-8 rounded-xl bg-sky-600 px-6 py-3 font-semibold text-white transition hover:bg-sky-700"
-        >
+  return (
+    <div className="space-y-8">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold">GitHub Integration</h1>
+          <p className="text-slate-500">
+            Connected repositories
+          </p>
+        </div>
+
+        <Button>
+          <GitBranch className="mr-2 h-4 w-4" />
           Connect GitHub
-        </button>
+        </Button>
+      </div>
+
+      <div className="grid gap-4">
+        {repositories?.length ? (
+          repositories.map((repo) => (
+            <Card
+              key={repo.id}
+              className="p-5"
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="font-semibold">
+                    {repo.name}
+                  </h3>
+
+                  <p className="mt-1 text-sm text-slate-500">
+                    {repo.description ?? "No description"}
+                  </p>
+                </div>
+
+                <a
+                  href={repo.html_url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-cyan-600 hover:underline"
+                >
+                  Open
+                </a>
+              </div>
+            </Card>
+          ))
+        ) : (
+          <Card className="p-8 text-center">
+            No repositories found.
+          </Card>
+        )}
       </div>
     </div>
   );
 }
-
-export default GitHubPage;
