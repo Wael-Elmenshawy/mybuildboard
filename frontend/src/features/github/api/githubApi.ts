@@ -12,10 +12,18 @@ export interface GitHubRepository {
   private: boolean;
 }
 
-export async function getGitHubRepositories(): Promise<GitHubRepository[]> {
-  return await apiClient.get<GitHubRepository[]>("/github/repositories");
+export interface GitHubConnectResponse {
+  authorization_url: string;
 }
 
-export async function connectGitHub(): Promise<{ authorization_url: string }> {
-  return await apiClient.get<{ authorization_url: string }>("/github/connect");
+export function getGitHubRepositories() {
+  return apiClient.get<GitHubRepository[]>("/github/repositories");
+}
+
+export function connectGitHub() {
+  return apiClient.get<GitHubConnectResponse>("/github/connect");
+}
+
+export function importRepository(repositoryId: string) {
+  return apiClient.post(`/github/repositories/${repositoryId}/import`);
 }

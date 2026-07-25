@@ -1,8 +1,9 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import {
   connectGitHub,
   getGitHubRepositories,
+  importRepository,
 } from "../api/githubApi";
 
 export function useGitHubRepositories() {
@@ -17,5 +18,18 @@ export function useGitHubConnection() {
     queryKey: ["github", "connect"],
     queryFn: connectGitHub,
     enabled: false,
+  });
+}
+
+export function useImportRepository() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: importRepository,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["github", "repositories"],
+      });
+    },
   });
 }
