@@ -34,7 +34,7 @@ const actions = [
     title: "Education",
     description: "Keep your education updated",
     icon: GraduationCap,
-    to: "/educations",
+    to: "/education",
     color: "from-orange-500 to-amber-600",
   },
   {
