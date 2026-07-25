@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { Pencil, Plus, Trash2 } from "lucide-react";
 
+import Button from "@/components/ui/Button";
+import Card from "@/components/ui/Card";
+
 import ExperienceDialog from "../components/ExperienceDialog";
 import ExperienceForm from "../components/ExperienceForm";
 import { useExperiences } from "../hooks/useExperiences";
@@ -9,7 +12,6 @@ import type { Experience } from "../types/experience";
 
 function ExperiencesPage() {
   const [open, setOpen] = useState(false);
-
   const [selectedExperience, setSelectedExperience] =
     useState<Experience>();
 
@@ -44,7 +46,6 @@ function ExperiencesPage() {
         <h1 className="text-3xl font-bold">
           Experiences
         </h1>
-
         <p className="mt-4">
           Loading experiences...
         </p>
@@ -58,7 +59,6 @@ function ExperiencesPage() {
         <h1 className="text-3xl font-bold">
           Experiences
         </h1>
-
         <p className="mt-4 text-red-500">
           Failed to load experiences.
         </p>
@@ -80,35 +80,31 @@ function ExperiencesPage() {
             </p>
           </div>
 
-          <button
+          <Button
             onClick={openCreateDialog}
-            className="flex items-center gap-2 rounded-lg bg-black px-5 py-3 text-white"
+            className="flex items-center gap-2"
           >
             <Plus size={18} />
             New Experience
-          </button>
+          </Button>
         </div>
 
         {!experiences || experiences.length === 0 ? (
-          <div className="rounded-xl border-2 border-dashed border-gray-300 py-20 text-center">
+          <Card className="border-2 border-dashed border-gray-300 py-20 text-center">
             <h2 className="text-2xl font-semibold">
               No experiences yet
             </h2>
 
-            <button
-              onClick={openCreateDialog}
-              className="mt-6 rounded-lg bg-black px-6 py-3 text-white"
-            >
-              Create Experience
-            </button>
-          </div>
+            <div className="mt-6">
+              <Button onClick={openCreateDialog}>
+                Create Experience
+              </Button>
+            </div>
+          </Card>
         ) : (
-          <div className="grid gap-6">
+          <div className="grid gap-4">
             {experiences.map((experience) => (
-              <div
-                key={experience.id}
-                className="rounded-xl border bg-white p-6 shadow-sm"
-              >
+              <Card key={experience.id}>
                 <div className="flex items-start justify-between">
                   <div>
                     <h2 className="text-xl font-semibold">
@@ -126,12 +122,21 @@ function ExperiencesPage() {
                         ? "Present"
                         : experience.end_date}
                     </p>
+
+                    {experience.description && (
+                      <p className="mt-4 text-gray-600">
+                        {experience.description}
+                      </p>
+                    )}
                   </div>
 
                   <div className="flex gap-2">
                     <button
+                      type="button"
                       onClick={() =>
-                        openEditDialog(experience)
+                        openEditDialog(
+                          experience,
+                        )
                       }
                       className="rounded-lg p-2 text-blue-600 hover:bg-blue-50"
                     >
@@ -139,6 +144,7 @@ function ExperiencesPage() {
                     </button>
 
                     <button
+                      type="button"
                       onClick={() => {
                         if (
                           confirm(
@@ -156,13 +162,7 @@ function ExperiencesPage() {
                     </button>
                   </div>
                 </div>
-
-                {experience.description && (
-                  <p className="mt-4 text-gray-600">
-                    {experience.description}
-                  </p>
-                )}
-              </div>
+              </Card>
             ))}
           </div>
         )}
