@@ -4,6 +4,8 @@ import { ENDPOINTS } from "@/services/api";
 export interface DashboardSummary {
   total_projects: number;
   total_skills: number;
+  total_experiences: number;
+  total_educations: number;
   total_certificates: number;
   profile_completion: number;
 }

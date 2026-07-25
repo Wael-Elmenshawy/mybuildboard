@@ -26,8 +26,8 @@ export default function DashboardPage() {
         stats={{
           projects: data.total_projects,
           skills: data.total_skills,
-          experiences: 0,
-          educations: 0,
+          experiences: data.total_experiences,
+          educations: data.total_educations,
           certificates: data.total_certificates,
         }}
       />
@@ -41,3 +41,5 @@ export default function DashboardPage() {
     </div>
   );
 }
+
+
