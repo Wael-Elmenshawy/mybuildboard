@@ -11,13 +11,15 @@ export default function DashboardPage() {
   if (isLoading || !data) {
     return (
       <div className="flex min-h-[70vh] items-center justify-center">
-        Loading dashboard...
+        <div className="rounded-2xl border border-slate-200 bg-white px-8 py-6 text-lg font-semibold shadow-sm">
+          Loading Dashboard...
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-10 pb-10">
       <DashboardHeader />
 
       <DashboardStats
@@ -32,7 +34,7 @@ export default function DashboardPage() {
 
       <QuickActions />
 
-      <div className="grid gap-8 xl:grid-cols-2">
+      <div className="grid gap-8 xl:grid-cols-[1.2fr_0.8fr]">
         <RecentProjects />
         <RecentActivity />
       </div>

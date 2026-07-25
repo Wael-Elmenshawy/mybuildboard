@@ -1,4 +1,8 @@
-import { Plus } from "lucide-react";
+import {
+  FolderKanban,
+  Plus,
+  Sparkles,
+} from "lucide-react";
 
 type ProjectsHeaderProps = {
   onCreate: () => void;
@@ -8,25 +12,40 @@ function ProjectsHeader({
   onCreate,
 }: ProjectsHeaderProps) {
   return (
-    <div className="mb-8 flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+    <section className="mb-10 flex flex-col gap-6 rounded-3xl border border-slate-200 bg-white p-8 shadow-sm lg:flex-row lg:items-center lg:justify-between">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">
+        <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-sky-50 px-4 py-2 text-sm font-semibold text-sky-700">
+          <Sparkles size={16} />
+          Portfolio Management
+        </div>
+
+        <h1 className="text-4xl font-bold tracking-tight text-slate-900">
           Projects
         </h1>
 
-        <p className="mt-2 text-gray-500">
-          Manage all your portfolio projects from one place.
+        <p className="mt-3 max-w-2xl text-base leading-7 text-slate-500">
+          Create beautiful portfolio projects, organize technologies,
+          and keep your public profile polished and up to date.
         </p>
       </div>
 
-      <button
-        onClick={onCreate}
-        className="inline-flex items-center justify-center gap-2 rounded-xl bg-black px-5 py-3 text-sm font-semibold text-white transition hover:bg-gray-800"
-      >
-        <Plus size={18} />
-        New Project
-      </button>
-    </div>
+      <div className="flex flex-wrap gap-3">
+        <button
+          onClick={onCreate}
+          className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-cyan-600 to-blue-700 px-6 py-3 font-semibold text-white shadow-lg transition hover:-translate-y-0.5 hover:shadow-xl"
+        >
+          <Plus size={18} />
+          New Project
+        </button>
+
+        <button
+          className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-6 py-3 font-semibold text-slate-700 transition hover:bg-slate-50"
+        >
+          <FolderKanban size={18} />
+          Portfolio
+        </button>
+      </div>
+    </section>
   );
 }
 
