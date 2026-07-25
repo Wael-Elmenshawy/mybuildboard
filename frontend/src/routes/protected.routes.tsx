@@ -41,6 +41,10 @@ const GitHubPage = lazy(
   () => import("@/features/github/pages/GitHubPage"),
 );
 
+const GitHubCallbackPage = lazy(
+  () => import("@/features/github/pages/GitHubCallbackPage"),
+);
+
 const loading = (
   <div className="flex h-full items-center justify-center p-8">
     Loading...
@@ -127,6 +131,15 @@ const protectedRoutes = (
         element={
           <Suspense fallback={loading}>
             <GitHubPage />
+          </Suspense>
+        }
+      />
+
+      <Route
+        path="/github/callback"
+        element={
+          <Suspense fallback={loading}>
+            <GitHubCallbackPage />
           </Suspense>
         }
       />
