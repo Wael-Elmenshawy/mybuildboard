@@ -4,10 +4,11 @@ import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 
 import {
-  useGitHubConnection,
   useGitHubRepositories,
   useImportRepository,
 } from "../hooks/useGitHub";
+
+import { connectGitHub } from "../api/githubApi";
 
 export default function GitHubPage() {
   const {
@@ -17,7 +18,6 @@ export default function GitHubPage() {
     refetch,
   } = useGitHubRepositories();
 
-  const githubConnection = useGitHubConnection();
   const importRepo = useImportRepository();
 
   if (isLoading) {
@@ -54,10 +54,18 @@ export default function GitHubPage() {
 
         <Button
           onClick={async () => {
-            const result = await githubConnection.refetch();
+            console.log("CONNECT GITHUB CLICKED");
 
-            if (result.data?.authorization_url) {
-              window.location.href = result.data.authorization_url;
+            try {
+              const result = await connectGitHub();
+
+              console.log("GITHUB RESPONSE:", result);
+
+              if (result.authorization_url) {
+                window.location.href = result.authorization_url;
+              }
+            } catch (error) {
+              console.error("GitHub connection failed:", error);
             }
           }}
         >

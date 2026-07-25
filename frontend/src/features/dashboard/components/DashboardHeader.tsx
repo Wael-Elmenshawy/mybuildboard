@@ -1,3 +1,5 @@
+import { connectGitHub } from "@/features/github/api/githubApi";
+
 function DashboardHeader() {
   return (
     <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-cyan-600 via-sky-600 to-blue-700 p-8 text-white shadow-2xl">
@@ -24,7 +26,22 @@ function DashboardHeader() {
               Open Portfolio
             </button>
 
-            <button className="rounded-xl border border-white/25 bg-white/10 px-6 py-3 font-semibold backdrop-blur transition hover:bg-white/20">
+            <button
+              onClick={async () => {
+                try {
+                  const response = await connectGitHub();
+
+                  console.log("GITHUB SYNC RESPONSE:", response);
+
+                  if (response.authorization_url) {
+                    window.location.href = response.authorization_url;
+                  }
+                } catch (error) {
+                  console.error("GitHub Sync failed:", error);
+                }
+              }}
+              className="rounded-xl border border-white/25 bg-white/10 px-6 py-3 font-semibold backdrop-blur transition hover:bg-white/20"
+            >
               GitHub Sync
             </button>
           </div>
