@@ -1,10 +1,12 @@
 import { useState } from "react";
 
+import Card from "@/components/ui/Card";
+import Button from "@/components/ui/Button";
+
 import ProfileDialog from "../components/ProfileDialog";
 import ProfileForm from "../components/ProfileForm";
 import { useProfile } from "../hooks/useProfile";
 import type { Profile } from "../types/profile";
-
 
 
 function ProfilePage() {
