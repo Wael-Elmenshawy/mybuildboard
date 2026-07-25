@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { Pencil, Plus, Trash2 } from "lucide-react";
 
+import Button from "@/components/ui/Button";
+import Card from "@/components/ui/Card";
+
 import SkillDialog from "../components/SkillDialog";
 import SkillForm from "../components/SkillForm";
 import { useSkills } from "../hooks/useSkills";
@@ -9,7 +12,6 @@ import type { Skill } from "../types/skill";
 
 function SkillsPage() {
   const [open, setOpen] = useState(false);
-
   const [selectedSkill, setSelectedSkill] =
     useState<Skill>();
 
@@ -42,7 +44,6 @@ function SkillsPage() {
         <h1 className="text-3xl font-bold">
           Skills
         </h1>
-
         <p className="mt-4">
           Loading skills...
         </p>
@@ -56,7 +57,6 @@ function SkillsPage() {
         <h1 className="text-3xl font-bold">
           Skills
         </h1>
-
         <p className="mt-4 text-red-500">
           Failed to load skills.
         </p>
@@ -78,48 +78,45 @@ function SkillsPage() {
             </p>
           </div>
 
-          <button
+          <Button
             onClick={openCreateDialog}
-            className="flex items-center gap-2 rounded-lg bg-black px-5 py-3 text-white"
+            className="flex items-center gap-2"
           >
             <Plus size={18} />
             New Skill
-          </button>
+          </Button>
         </div>
 
         {!skills || skills.length === 0 ? (
-          <div className="rounded-xl border-2 border-dashed border-gray-300 py-20 text-center">
+          <Card className="border-2 border-dashed border-gray-300 py-20 text-center">
             <h2 className="text-2xl font-semibold">
               No skills yet
             </h2>
 
-            <button
-              onClick={openCreateDialog}
-              className="mt-6 rounded-lg bg-black px-6 py-3 text-white"
-            >
-              Create Skill
-            </button>
-          </div>
+            <div className="mt-6">
+              <Button onClick={openCreateDialog}>
+                Create Skill
+              </Button>
+            </div>
+          </Card>
         ) : (
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {skills.map((skill) => (
-              <div
-                key={skill.id}
-                className="rounded-xl border bg-white p-5 shadow-sm"
-              >
+              <Card key={skill.id}>
                 <div className="flex items-start justify-between">
                   <div>
                     <h2 className="text-lg font-semibold">
                       {skill.name}
                     </h2>
 
-                    <p className="mt-2 text-sm text-gray-500 capitalize">
+                    <p className="mt-2 text-sm capitalize text-gray-500">
                       {skill.level}
                     </p>
                   </div>
 
                   <div className="flex gap-2">
                     <button
+                      type="button"
                       onClick={() =>
                         openEditDialog(skill)
                       }
@@ -129,14 +126,15 @@ function SkillsPage() {
                     </button>
 
                     <button
+                      type="button"
                       onClick={() => {
                         if (
                           confirm(
-                            `Delete "${skill.name}"?`
+                            `Delete "${skill.name}"?`,
                           )
                         ) {
                           deleteSkill.mutate(
-                            skill.id
+                            skill.id,
                           );
                         }
                       }}
@@ -146,7 +144,7 @@ function SkillsPage() {
                     </button>
                   </div>
                 </div>
-              </div>
+              </Card>
             ))}
           </div>
         )}

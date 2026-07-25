@@ -1,25 +1,20 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-import type { Skill } from "../types/skill";
+import Button from "@/components/ui/Button";
+import Input from "@/components/ui/Input";
+import Select from "@/components/ui/Select";
+
 import { useCreateSkill } from "../mutations/useCreateSkill";
 import { useUpdateSkill } from "../mutations/useUpdateSkill";
-
-type SkillFormValues = {
-  name: string;
-
-  level:
-    | "beginner"
-    | "intermediate"
-    | "advanced"
-    | "expert";
-
-  display_order: number;
-};
+import {
+  skillSchema,
+  type SkillFormValues,
+} from "../schema/skillSchema";
+import type { Skill } from "../types/skill";
 
 type SkillFormProps = {
   skill?: Skill;
-
   onSuccess?: () => void;
 };
 
@@ -31,10 +26,15 @@ function SkillForm({
     register,
     handleSubmit,
     reset,
-  } = useForm<SkillFormValues>();
+  } = useForm<SkillFormValues>({
+    defaultValues: {
+      name: "",
+      level: "intermediate",
+      display_order: 0,
+    },
+  });
 
   const createSkill = useCreateSkill();
-
   const updateSkill = useUpdateSkill();
 
   useEffect(() => {
@@ -42,8 +42,7 @@ function SkillForm({
       reset({
         name: skill.name,
         level: skill.level,
-        display_order:
-          skill.display_order,
+        display_order: skill.display_order,
       });
     } else {
       reset({
@@ -57,6 +56,8 @@ function SkillForm({
   const onSubmit = async (
     data: SkillFormValues,
   ) => {
+    skillSchema.parse(data);
+
     if (skill) {
       await updateSkill.mutateAsync({
         skillId: skill.id,
@@ -66,7 +67,11 @@ function SkillForm({
       await createSkill.mutateAsync(data);
     }
 
-    reset();
+    reset({
+      name: "",
+      level: "intermediate",
+      display_order: 0,
+    });
 
     onSuccess?.();
   };
@@ -78,72 +83,54 @@ function SkillForm({
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="space-y-5"
+      className="space-y-6"
     >
-      <div>
-        <label className="mb-2 block font-medium">
-          Skill Name
-        </label>
+      <Input
+        label="Skill Name"
+        placeholder="e.g. React"
+        {...register("name")}
+      />
 
-        <input
-          {...register("name")}
-          className="w-full rounded-lg border px-4 py-3"
-        />
-      </div>
+      <Select
+        label="Level"
+        {...register("level")}
+      >
+        <option value="beginner">
+          Beginner
+        </option>
 
-      <div>
-        <label className="mb-2 block font-medium">
-          Level
-        </label>
+        <option value="intermediate">
+          Intermediate
+        </option>
 
-        <select
-          {...register("level")}
-          className="w-full rounded-lg border px-4 py-3"
-        >
-          <option value="beginner">
-            Beginner
-          </option>
+        <option value="advanced">
+          Advanced
+        </option>
 
-          <option value="intermediate">
-            Intermediate
-          </option>
+        <option value="expert">
+          Expert
+        </option>
+      </Select>
 
-          <option value="advanced">
-            Advanced
-          </option>
-
-          <option value="expert">
-            Expert
-          </option>
-        </select>
-      </div>
-
-      <div>
-        <label className="mb-2 block font-medium">
-          Display Order
-        </label>
-
-        <input
-          type="number"
-          {...register("display_order", {
-            valueAsNumber: true,
-          })}
-          className="w-full rounded-lg border px-4 py-3"
-        />
-      </div>
+      <Input
+        type="number"
+        label="Display Order"
+        {...register("display_order", {
+          valueAsNumber: true,
+        })}
+      />
 
       <div className="flex justify-end">
-        <button
+        <Button
           type="submit"
           disabled={loading}
-          className="rounded-lg bg-black px-5 py-3 text-white disabled:opacity-50"
         >
           {loading
             ? "Saving..."
             : skill
               ? "Update Skill"
               : "Save Skill"}
-        </button>
+        </Button>
       </div>
     </form>
   );
