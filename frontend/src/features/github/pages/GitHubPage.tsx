@@ -3,7 +3,11 @@ import { GitBranch, Loader2 } from "lucide-react";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 
-import { useGitHubConnection, useGitHubRepositories } from "../hooks/useGitHub";
+import {
+  useGitHubConnection,
+  useGitHubRepositories,
+  useImportRepository,
+} from "../hooks/useGitHub";
 
 export default function GitHubPage() {
   const {
@@ -14,6 +18,7 @@ export default function GitHubPage() {
   } = useGitHubRepositories();
 
   const githubConnection = useGitHubConnection();
+  const importRepo = useImportRepository();
 
   if (isLoading) {
     return (
@@ -47,12 +52,15 @@ export default function GitHubPage() {
           </p>
         </div>
 
-        <Button onClick={async () => {
-          const result = await githubConnection.refetch();
-          if (result.data?.authorization_url) {
-            window.location.href = result.data.authorization_url;
-          }
-        }}>
+        <Button
+          onClick={async () => {
+            const result = await githubConnection.refetch();
+
+            if (result.data?.authorization_url) {
+              window.location.href = result.data.authorization_url;
+            }
+          }}
+        >
           <GitBranch className="mr-2 h-4 w-4" />
           Connect GitHub
         </Button>
@@ -63,28 +71,22 @@ export default function GitHubPage() {
           repositories.map((repo) => (
             <Card
               key={repo.id}
-              className="p-5"
+              className="flex items-center justify-between p-5"
             >
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="font-semibold">
-                    {repo.name}
-                  </h3>
+              <div>
+                <h3 className="font-semibold">{repo.name}</h3>
 
-                  <p className="mt-1 text-sm text-slate-500">
-                    {repo.description ?? "No description"}
-                  </p>
-                </div>
-
-                <a
-                  href={repo.html_url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-cyan-600 hover:underline"
-                >
-                  Open
-                </a>
+                <p className="mt-1 text-sm text-slate-500">
+                  {repo.description ?? "No description"}
+                </p>
               </div>
+
+              <Button
+                disabled={importRepo.isPending}
+                onClick={() => importRepo.mutate(repo.id)}
+              >
+                {importRepo.isPending ? "Importing..." : "Import"}
+              </Button>
             </Card>
           ))
         ) : (
