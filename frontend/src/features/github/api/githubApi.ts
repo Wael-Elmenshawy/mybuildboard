@@ -17,11 +17,11 @@ export interface GitHubConnectResponse {
 }
 
 export function getGitHubRepositories() {
-  return apiClient.get<GitHubRepository[]>("/github/repositories");
+  return apiClient.get<GitHubRepository[]>("/api/v1/github/repositories");
 }
 
 export function connectGitHub() {
-  return apiClient.get<GitHubConnectResponse>("/github/connect");
+  return apiClient.get<GitHubConnectResponse>("/api/v1/github/connect");
 }
 
 export function importRepository(repositoryId: string) {
