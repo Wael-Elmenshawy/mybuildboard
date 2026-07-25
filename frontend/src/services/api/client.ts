@@ -32,6 +32,13 @@ export const apiClient = {
   ) =>
     request<T>(axiosInstance.post(url, body, config)),
 
+  put: <T>(
+    url: string,
+    body?: unknown,
+    config?: AxiosRequestConfig
+  ) =>
+    request<T>(axiosInstance.put(url, body, config)),
+
   patch: <T>(
     url: string,
     body?: unknown,

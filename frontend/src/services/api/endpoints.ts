@@ -43,6 +43,12 @@ export const ENDPOINTS = {
       "/api/v1/projects/import-from-github",
   },
 
+  profiles: {
+    base: "/api/v1/profiles",
+    me: "/api/v1/profiles/me",
+    avatar: "/api/v1/profiles/me/avatar",
+  },
+
   skills: {
     base: "/api/v1/skills",
 

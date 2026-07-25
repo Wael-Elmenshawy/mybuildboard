@@ -3,10 +3,11 @@ import { Route } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 
 import AppLayout from "@/components/layout/AppLayout/AppLayout";
+import CertificatesPage from "@/features/certificates/pages/CertificatesPage";
 import DashboardPage from "@/features/dashboard/pages/DashboardPage";
 import EducationPage from "@/features/education/pages/EducationPage";
 import ExperiencesPage from "@/features/experiences/pages/ExperiencesPage";
-import CertificatesPage from "@/features/certificates/pages/CertificatesPage";
+import ProfilePage from "@/features/profile/pages/ProfilePage";
 import ProjectsPage from "@/features/projects/pages/ProjectsPage";
 import SkillsPage from "@/features/skills/pages/SkillsPage";
 import SocialLinksPage from "@/features/social-links/pages/SocialLinksPage";
@@ -17,6 +18,11 @@ const protectedRoutes = (
       <Route
         path="/dashboard"
         element={<DashboardPage />}
+      />
+
+      <Route
+        path="/profile"
+        element={<ProfilePage />}
       />
 
       <Route
