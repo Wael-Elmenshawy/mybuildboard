@@ -3,7 +3,7 @@ import { GitBranch, Loader2 } from "lucide-react";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 
-import { useGitHubRepositories } from "../hooks/useGitHub";
+import { useGitHubConnection, useGitHubRepositories } from "../hooks/useGitHub";
 
 export default function GitHubPage() {
   const {
@@ -12,6 +12,8 @@ export default function GitHubPage() {
     isError,
     refetch,
   } = useGitHubRepositories();
+
+  const githubConnection = useGitHubConnection();
 
   if (isLoading) {
     return (
@@ -45,7 +47,12 @@ export default function GitHubPage() {
           </p>
         </div>
 
-        <Button>
+        <Button onClick={async () => {
+          const result = await githubConnection.refetch();
+          if (result.data?.authorization_url) {
+            window.location.href = result.data.authorization_url;
+          }
+        }}>
           <GitBranch className="mr-2 h-4 w-4" />
           Connect GitHub
         </Button>
